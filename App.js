@@ -7,6 +7,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import LoginScreen from "./components/LoginScreen";
 import HomeScreen from "./components/HomeScreen";
+import NavBar from "./components/NavBar";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
+      <NavBar></NavBar>
     </NavigationContainer>
   );
 }
