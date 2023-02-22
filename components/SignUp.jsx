@@ -1,6 +1,5 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { auth } from "../firebaseConfig";
 import {
   View,
   Text,
@@ -14,11 +13,12 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
 
   const handleSignUp = () => {
+    const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setPassword("");
         setEmail("");
-        console.log(userCredential);
+        //console.log(userCredential);
       })
       .catch((err) => {
         console.log(err);

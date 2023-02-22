@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   View,
   Text,
@@ -14,12 +13,13 @@ function LogIn() {
   const [password, setPassword] = useState("");
 
   const handleLogIn = () => {
+    const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setPassword("");
         setEmail("");
-        console.log(userCredential);
-        const user = userCredential.user; ///! Track logged in user
+        //console.log(userCredential);
+        //const user = userCredential.user; ///! Track logged in user
       })
       .catch((err) => {
         console.log(err);
