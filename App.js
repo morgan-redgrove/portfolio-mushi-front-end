@@ -2,10 +2,10 @@ import * as React from "react";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import LoginScreen from "./components/LoginScreen";
-import HomeScreen from "./components/HomeScreen";
-import MapScreen from "./components/MapScreen";
-import CreateReportScreen from "./components/CreateReportScreen";
+import LoginScreen from "./components/screens/LoginScreen";
+import HomeScreen from "./components/screens/HomeScreen";
+import MapScreen from "./components/screens/MapScreen";
+import CreateReportScreen from "./components/screens/CreateReportScreen";
 
 const Tab = createBottomTabNavigator();
 
