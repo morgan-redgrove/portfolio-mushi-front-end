@@ -1,25 +1,23 @@
 import * as React from "react";
+import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./components/LoginScreen";
 import HomeScreen from "./components/HomeScreen";
-import NavBar from "./components/NavBar";
+import MapScreen from "./components/MapScreen";
+import CreateReportScreen from "./components/CreateReportScreen";
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-      <NavBar></NavBar>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Report" component={CreateReportScreen} />
+        <Tab.Screen name="Map" component={MapScreen} />
+        <Tab.Screen name="Login" component={LoginScreen} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({});
