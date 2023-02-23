@@ -18,8 +18,7 @@ function LogIn() {
       .then((userCredential) => {
         setPassword("");
         setEmail("");
-        //console.log(userCredential);
-        //const user = userCredential.user; ///! Track logged in user
+        //current user tracked in UserContext
       })
       .catch((err) => {
         console.log(err);
