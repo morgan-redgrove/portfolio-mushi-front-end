@@ -16,7 +16,7 @@ function MapScreen() {
   return (
     <View>
       <Map />
-      <ReportList />
+      <ReportList reports={reports} />
     </View>
   );
 }
