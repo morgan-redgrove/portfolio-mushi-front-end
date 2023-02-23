@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { useNavigation } from '@react-navigation/native'
 import MapView, {Marker} from "react-native-maps";
 import * as Location from 'expo-location';
 
 
 function Map({reports}) {
+
+  const navigation = useNavigation();
+  
   const [isLoading, setIsLoading] = useState(true)
 
   const [mapRegion, setMapRegion] = useState({
@@ -49,7 +53,7 @@ function Map({reports}) {
         return (<Marker key={_id} coordinate={{
           latitude: lat,
           longitude: long
-        }} title= ""/>)
+        }} title= "" onPress={() => navigation.navigate('Report', { id: _id})} image={require("../assets/mushroom-icon.png")} />)
       })}
     </MapView>
     <Text>{isLoading? "Loading...": null}</Text>
