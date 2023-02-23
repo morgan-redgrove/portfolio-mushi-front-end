@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native'
-import MapView, {Marker} from "react-native-maps";
+import MapView, {Marker, Callout} from "react-native-maps";
 import * as Location from 'expo-location';
 
 
@@ -49,14 +49,26 @@ function Map({reports}) {
     <MapView region = {mapRegion} style = {styles.map}>
       <Marker coordinate={mapRegion} title="Your Location" />
 
-      {reports.map(({_id, location:{lat, long}})=>{
+      {reports.map(({_id, location:{lat, long}, species:{species}}, index)=>{
         return (<Marker key={_id} coordinate={{
           latitude: lat,
           longitude: long
-        }} title= "" onPress={() => navigation.navigate('Report', { id: _id})} image={require("../assets/mushroom-icon.png")} />)
+        }} title= ""  image={require("../assets/mushroom-icon.png")}>
+          <Callout onPress={() => navigation.navigate('Report', { id: _id})}>
+            <View>
+              <Image
+                source={require("../assets/mushroom_photo.jpeg")}
+              />
+              <Text>{species}</Text>     
+            </View>
+          </Callout>
+        </Marker>)
       })}
     </MapView>
     <Text>{isLoading? "Loading...": null}</Text>
+    <Image
+      source={require("../assets/mushroom_photo.jpeg")}
+    />
     </View>
 
 )}
