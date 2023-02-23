@@ -20,6 +20,8 @@ function CreateReportScreen() {
 
   function submitReport() {
     //postReport()
+    //* species, note done, username - email
+    //! img_url, location
   }
 
   return (
