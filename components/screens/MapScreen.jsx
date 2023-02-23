@@ -15,8 +15,8 @@ function MapScreen() {
 
   return (
     <View>
-      <Map reports= {reports} style= {styles.container}/>
-      <ReportList />
+      <Map reports={reports}/>
+      <ReportList reports={reports} />
     </View>
   );
 }
