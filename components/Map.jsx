@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import MapView, {Marker, Callout} from "react-native-maps";
+import { SelectList } from 'react-native-dropdown-select-list'
 import * as Location from 'expo-location';
 
 
@@ -10,6 +11,12 @@ function Map({reports}) {
   const navigation = useNavigation();
   
   const [isLoading, setIsLoading] = useState(true)
+  const [selected, setSelected] = useState(String)
+  const [filtReports, setFiltReports] = useState([...reports])
+  
+  const species = reports.map((report) => {
+    return {value: report.species.species}
+  })
 
   const [mapRegion, setMapRegion] = useState({
     latitude: 53.4809634,
@@ -46,19 +53,31 @@ function Map({reports}) {
   return (
     <View>
 
-    <MapView region = {mapRegion} style = {styles.map}>
+    <SelectList
+      setSelected = {(val) => setSelected(val)}
+      data={species}
+      save="value"
+      onSelect={() => setFiltReports(reports.filter((report) => {return report.species.species === selected}))} 
+    />
+
+    <MapView region = {mapRegion} mapType="satellite" style = {styles.map}>
       <Marker coordinate={mapRegion} title="Your Location" />
 
-      {reports.map(({_id, location:{lat, long}, species:{species}}, index)=>{
+      {filtReports.map(({_id, location:{lat, long}, species:{species}})=>{
         return (<Marker key={_id} coordinate={{
           latitude: lat,
           longitude: long
         }} title= ""  image={require("../assets/mushroom-icon.png")}>
           <Callout onPress={() => navigation.navigate('Report', { id: _id})}>
             <View>
-              <Image
-                source={require("../assets/mushroom_photo.jpeg")}
-              />
+
+              <Text
+                style={{padding: 0, rheight:200, width:200}}
+              >
+                <Image
+                   source={require("../assets/mushroom_photo.jpeg")}
+                />
+              </Text>
               <Text>{species}</Text>     
             </View>
           </Callout>
@@ -66,18 +85,14 @@ function Map({reports}) {
       })}
     </MapView>
     <Text>{isLoading? "Loading...": null}</Text>
-    <Image
-      source={require("../assets/mushroom_photo.jpeg")}
-    />
     </View>
 
 )}
 
-
 const styles = StyleSheet.create({
   map: {
     width: '100%',
-    height: '75%',
+    height: '100%',
   },
 });
 export default Map;

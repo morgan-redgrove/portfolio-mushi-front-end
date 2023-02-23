@@ -15,8 +15,8 @@ function MapScreen() {
 
   return (
     <View>
-      <Map reports={reports}/>
-      <ReportList reports={reports} />
+      <Map reports={reports} setReports={setReports}/>
+      {/* <ReportList reports={reports} /> */}
     </View>
   );
 }
