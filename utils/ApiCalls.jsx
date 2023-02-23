@@ -10,3 +10,9 @@ export const getReports = () => {
     return response.data.reports;
   });
 };
+
+export const getReportById = (id) => {
+    return apiCaller.get(`/reports/${id}`).then((response) => {
+      return response.data.report[0];
+    });
+  };
