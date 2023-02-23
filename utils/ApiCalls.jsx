@@ -6,7 +6,7 @@ const apiCaller = axios.create({
 
 export const getReports = () => {
   return apiCaller.get("/reports").then((response) => {
-    console.log(response.data, "<<<<<RES");
+    // console.log(response.data, "<<<<<RES");
     return response.data.reports;
   });
 };
