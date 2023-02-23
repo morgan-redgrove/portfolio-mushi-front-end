@@ -15,10 +15,17 @@ function MapScreen() {
 
   return (
     <View>
-      <Map />
+      <Map style= {styles.container}/>
       <ReportList />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
 
 export default MapScreen;
