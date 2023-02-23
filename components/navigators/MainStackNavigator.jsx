@@ -1,14 +1,14 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "../screens/HomeScreen"
-import MapScreen from "../screens/MapScreen"
-import CreateReportScreen from "../screens/CreateReportScreen"
+import HomeScreen from "../screens/HomeScreen";
+import MapScreen from "../screens/MapScreen";
+import CreateReportScreen from "../screens/CreateReportScreen";
 import UserScreen from "../screens/UserScreen";
 
 const Stack = createStackNavigator();
 
-const MainStackNavigator = ({openFirst}) => {
+const MainStackNavigator = ({ openFirst }) => {
   return (
     <Stack.Navigator initialRouteName={openFirst}>
       <Stack.Screen name="Home" component={HomeScreen} />
