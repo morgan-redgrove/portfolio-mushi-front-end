@@ -5,6 +5,7 @@ import HomeScreen from "../screens/HomeScreen";
 import MapScreen from "../screens/MapScreen";
 import CreateReportScreen from "../screens/CreateReportScreen";
 import UserScreen from "../screens/UserScreen";
+import ReportScreen from "../screens/ReportScreen";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const MainStackNavigator = ({ openFirst }) => {
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="CreateReport" component={CreateReportScreen} />
       <Stack.Screen name="User" component={UserScreen} />
+      <Stack.Screen name="Report" component={ReportScreen} />
     </Stack.Navigator>
   );
 };
