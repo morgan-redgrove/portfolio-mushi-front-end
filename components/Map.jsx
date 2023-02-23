@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from "react";
-import { View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import MapView, {Marker} from "react-native-maps";
 import * as Location from 'expo-location';
 
 
-function Map() {
+function Map({reports}) {
+  const [isLoading, setIsLoading] = useState(true)
+
   const [mapRegion, setMapRegion] = useState({
     latitude: 53.4809634,
     longitude: -2.2369427,
@@ -32,14 +34,27 @@ function Map() {
   };
 
   useEffect(() => {
-    getUserLocation();
+    getUserLocation().then(()=>{
+      setIsLoading(false)
+    });
   }, []);
 
-
   return (
+    <View>
+
     <MapView region = {mapRegion} style = {styles.map}>
       <Marker coordinate={mapRegion} title="Your Location" />
+
+      {reports.map(({_id, location:{lat, long}})=>{
+        return (<Marker key={_id} coordinate={{
+          latitude: lat,
+          longitude: long
+        }} title= ""/>)
+      })}
     </MapView>
+    <Text>{isLoading? "Loading...": null}</Text>
+    </View>
+
 )}
 
 
