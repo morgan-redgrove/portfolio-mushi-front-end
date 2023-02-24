@@ -12,11 +12,13 @@ function Map({reports}) {
   
   const [isLoading, setIsLoading] = useState(true)
   const [selected, setSelected] = useState(String)
-  const [filtReports, setFiltReports] = useState([...reports])
+  const [filtReports, setFiltReports] = useState(reports)
   
   const species = reports.map((report) => {
     return {value: report.species.species}
   })
+
+  const options = [{value: "Show All"}, ...species]
 
   const [mapRegion, setMapRegion] = useState({
     latitude: 53.4809634,
@@ -53,38 +55,45 @@ function Map({reports}) {
   return (
     <View>
 
-    <SelectList
-      setSelected = {(val) => setSelected(val)}
-      data={species}
-      save="value"
-      onSelect={() => setFiltReports(reports.filter((report) => {return report.species.species === selected}))} 
-    />
+      <SelectList
+        setSelected = {(val) => setSelected(val)}
+        data={options}
+        save="value"
+        placeholder="Search for a species..."
+        onSelect={() => setFiltReports(reports.filter((report) => {
+          if(selected === "Show All") {
+            return true
+          } else {
+            return report.species.species === selected
+          }
+        }))} 
+      />
 
-    <MapView region = {mapRegion} mapType="satellite" style = {styles.map}>
-      <Marker coordinate={mapRegion} title="Your Location" />
+      <MapView region = {mapRegion} mapType="satellite" style = {styles.map}>
+        <Marker coordinate={mapRegion} title="Your Location" />
 
-      {filtReports.map(({_id, location:{lat, long}, species:{species}})=>{
-        return (<Marker key={_id} coordinate={{
-          latitude: lat,
-          longitude: long
-        }} title= ""  image={require("../assets/mushroom-icon.png")}>
-          <Callout onPress={() => navigation.navigate('Report', { id: _id})}>
-            <View>
+        {filtReports.map(({_id, location:{lat, long}, species:{species}})=>{
+          return (<Marker key={_id} coordinate={{
+            latitude: lat,
+            longitude: long
+          }} title= ""  image={require("../assets/mushroom-icon.png")}>
+            <Callout onPress={() => navigation.navigate('Report', { id: _id})}>
+              <View>
 
-              <Text
-                style={{padding: 0, rheight:200, width:200}}
-              >
-                <Image
-                   source={require("../assets/mushroom_photo.jpeg")}
-                />
-              </Text>
-              <Text>{species}</Text>     
-            </View>
-          </Callout>
-        </Marker>)
-      })}
-    </MapView>
-    <Text>{isLoading? "Loading...": null}</Text>
+                <Text
+                  style={{padding: 0, rheight:200, width:200}}
+                >
+                  <Image
+                    source={require("../assets/mushroom-photo.jpeg")}
+                  />
+                </Text>
+                <Text>{species}</Text>     
+              </View>
+            </Callout>
+          </Marker>)
+        })}
+      </MapView>
+
     </View>
 
 )}

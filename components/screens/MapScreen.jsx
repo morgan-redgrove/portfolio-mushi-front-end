@@ -5,7 +5,7 @@ import ReportList from "../ReportList";
 import Map from "../Map";
 
 function MapScreen() {
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState(null);
 
   useEffect(() => {
     getReports().then((reports) => {
@@ -13,12 +13,19 @@ function MapScreen() {
     });
   }, []);
 
-  return (
-    <View>
-      <Map reports={reports} setReports={setReports}/>
-      {/* <ReportList reports={reports} /> */}
-    </View>
-  );
+  if (!reports) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    )
+  } else {
+    return (
+      <View>
+        <Map reports={reports} setReports={setReports}/>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
