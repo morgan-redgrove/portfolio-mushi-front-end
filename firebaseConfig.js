@@ -21,5 +21,5 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
 const storage = getStorage();
-export const storageRef = ref(storage);
-export const imagesRef = ref(storage, "images");
+// export const storageRef = ref(storage);
+// export const imagesRef = ref(storage, "images");
