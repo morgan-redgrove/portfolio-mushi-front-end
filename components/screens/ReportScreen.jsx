@@ -21,9 +21,7 @@ function ReportScreen({ route }) {
       setReport(report);
       getMushroomByCommonName(report.species.species)
         .then((mushroom) => {
-          console.log(mushroom);
           setMushroomInfo(mushroom);
-          console.log(mushroomInfo);
         })
         .catch((error) => {
           console.log("Error while fetching mushroom info: ", error);

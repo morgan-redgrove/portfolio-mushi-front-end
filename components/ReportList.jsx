@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native'
 function ReportList({ reports }) {
 
   const navigation = useNavigation();
-  function goToReport() {}
 
   return (
     <View style={styles.reportList}>
