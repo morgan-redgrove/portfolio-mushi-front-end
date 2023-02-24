@@ -1,23 +1,22 @@
 import * as ImagePicker from "expo-image-picker";
-import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
+
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { getMushrooms, postReport } from "../../utils/ApiCalls";
+import PinMap from "../PinMap";
 
 function CreateReportScreen() {
   const [species, setSpecies] = useState([]);
   const [selected, setSelected] = useState("");
   const [note, setNote] = useState("");
   const [image, setImage] = useState(null);
-  const [mapRegion, setMapRegion] = useState({
-    latitude: 53.4809634,
-    longitude: -2.2369427,
+  const [pinRegion, setPinRegion] = useState({
+    latitude: 0,
+    longitude: 0,
     latitudeDelta: 0.00922,
     longitudeDelta: 0.00421,
   });
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getMushrooms().then((mushrooms) => {
@@ -26,10 +25,6 @@ function CreateReportScreen() {
           return { value: mushroom.commonName };
         })
       );
-    });
-
-    getUserLocation().then(() => {
-      setIsLoading(false);
     });
   }, []);
 
@@ -45,25 +40,6 @@ function CreateReportScreen() {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
-  };
-
-  const getUserLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({
-      enableHighAccuracy: true,
-    });
-
-    setMapRegion({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 0.00922,
-      longitudeDelta: 0.00421,
-    });
   };
 
   function submitReport() {}
@@ -89,13 +65,8 @@ function CreateReportScreen() {
         value={note}
       />
       <Text>Your Location</Text>
-      <MapView
-        region={mapRegion}
-        mapType="satellite"
-        style={{ width: 200, height: 200 }}
-      >
-        <Marker coordinate={mapRegion} />
-      </MapView>
+      <PinMap pinRegion={pinRegion} setPinRegion={setPinRegion} />
+      <Text>{`LAT: ${pinRegion.latitude}  LONG: ${pinRegion.longitude}`}</Text>
       <Button title="Add Report" onPress={submitReport} />
     </View>
   );
