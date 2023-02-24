@@ -17,6 +17,32 @@ export const getReportById = (id) => {
   });
 };
 
+export const getMushrooms = () => {
+  return apiCaller.get("/mushrooms").then((response) => {
+    return response.data.mushrooms;
+  });
+};
+
+export const postReport = (
+  location,
+  img_url,
+  username,
+  time_stamp,
+  species
+) => {
+  const report = {
+    location: location,
+    img_url: img_url,
+    username: username,
+    time_stamp: time_stamp,
+    species: species,
+  };
+  console.log(report, "<<< Poseted report");
+  return apiCaller.post("/report", report).then((response) => {
+    return response.data.report;
+  });
+};
+
 export const getMushroomByCommonName = (commonName) => {
   return apiCaller.get(`/mushrooms/${commonName}`).then((response) => {
     return response.data.mushrooms[0];
