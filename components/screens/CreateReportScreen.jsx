@@ -1,4 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
+import MapView, { Marker } from "react-native-maps";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -9,6 +11,13 @@ function CreateReportScreen() {
   const [selected, setSelected] = useState("");
   const [note, setNote] = useState("");
   const [image, setImage] = useState(null);
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 53.4809634,
+    longitude: -2.2369427,
+    latitudeDelta: 0.00922,
+    longitudeDelta: 0.00421,
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getMushrooms().then((mushrooms) => {
@@ -17,6 +26,10 @@ function CreateReportScreen() {
           return { value: mushroom.commonName };
         })
       );
+    });
+
+    getUserLocation().then(() => {
+      setIsLoading(false);
     });
   }, []);
 
@@ -29,18 +42,31 @@ function CreateReportScreen() {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
 
-  function submitReport() {
-    //postReport()
-    //* species, note done, username - email
-    //! img_url, location
-  }
+  const getUserLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true,
+    });
+
+    setMapRegion({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421,
+    });
+  };
+
+  function submitReport() {}
 
   return (
     <View>
@@ -63,6 +89,13 @@ function CreateReportScreen() {
         value={note}
       />
       <Text>Your Location</Text>
+      <MapView
+        region={mapRegion}
+        mapType="satellite"
+        style={{ width: 200, height: 200 }}
+      >
+        <Marker coordinate={mapRegion} />
+      </MapView>
       <Button title="Add Report" onPress={submitReport} />
     </View>
   );
