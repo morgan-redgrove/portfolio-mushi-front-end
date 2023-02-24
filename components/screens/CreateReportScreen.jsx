@@ -1,5 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
-
+import { storage } from "../../firebaseConfig";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -42,6 +43,16 @@ function CreateReportScreen() {
     }
   };
 
+  uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const imgRef = ref(storage, `${imageName}`);
+    uploadBytes(imgRef, blob).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+  };
+
   function submitReport() {}
 
   return (
@@ -67,6 +78,10 @@ function CreateReportScreen() {
       <Text>Your Location</Text>
       <PinMap pinRegion={pinRegion} setPinRegion={setPinRegion} />
       <Text>{`LAT: ${pinRegion.latitude}  LONG: ${pinRegion.longitude}`}</Text>
+      <Button
+        title="test upload image"
+        onPress={(e) => uploadImage(image, "test")}
+      />
       <Button title="Add Report" onPress={submitReport} />
     </View>
   );
