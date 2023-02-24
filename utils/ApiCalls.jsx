@@ -12,7 +12,13 @@ export const getReports = () => {
 };
 
 export const getReportById = (id) => {
-    return apiCaller.get(`/reports/${id}`).then((response) => {
-      return response.data.report[0];
-    });
-  };
+  return apiCaller.get(`/reports/${id}`).then((response) => {
+    return response.data.report[0];
+  });
+};
+
+export const getMushroomByCommonName = (commonName) => {
+  return apiCaller.get(`/mushrooms/${commonName}`).then((response) => {
+    return response.data.mushrooms[0];
+  });
+};
