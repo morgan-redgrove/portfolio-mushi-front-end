@@ -42,3 +42,9 @@ export const postReport = (
     return response.data.report;
   });
 };
+
+export const getMushroomByCommonName = (commonName) => {
+  return apiCaller.get(`/mushrooms/${commonName}`).then((response) => {
+    return response.data.mushrooms[0];
+  });
+};
