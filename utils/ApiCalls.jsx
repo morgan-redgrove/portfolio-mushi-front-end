@@ -23,22 +23,19 @@ export const getMushrooms = () => {
   });
 };
 
-export const postReport = (
-  location,
-  img_url,
-  username,
-  time_stamp,
-  species
-) => {
+export const postReport = (location, img_url, username, species, note) => {
+  const time_stamp = new Date().toString();
   const report = {
-    location: location,
-    img_url: img_url,
-    username: username,
-    time_stamp: time_stamp,
-    species: species,
+    location,
+    img_url,
+    username,
+    time_stamp,
+    species,
+    note,
   };
-  console.log(report, "<<< report to be posted");
-  return apiCaller.post("/report", report).then((response) => {
+  //console.log(report, "<<< report to be posted");
+  return apiCaller.post("/reports", { report }).then((response) => {
+    console.log("Post report sucsessfull");
     return response.data.report;
   });
 };
