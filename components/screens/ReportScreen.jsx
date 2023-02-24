@@ -14,19 +14,6 @@ function ReportScreen({route}) {
         })
     }, [])
 
-    // console.log(report)
-
-    // const { username, location, time_stamp, notes, species,alternate_species, credibility, prevalence } = report
-    // console.log(username)
-    // console.log(location)
-    // console.log(time_stamp)
-    // console.log(notes)
-    // console.log(species)
-    // console.log(alternate_species)
-    // console.log(credibility)
-    // console.log(prevalence)
-
-
     if (!report) {
         return(
             <View>
