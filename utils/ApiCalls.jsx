@@ -37,7 +37,7 @@ export const postReport = (
     time_stamp: time_stamp,
     species: species,
   };
-  console.log(report, "<<< Poseted report");
+  console.log(report, "<<< report to be posted");
   return apiCaller.post("/report", report).then((response) => {
     return response.data.report;
   });
