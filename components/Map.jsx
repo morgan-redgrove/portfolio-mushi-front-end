@@ -77,7 +77,7 @@ function Map({ reports }) {
         <Marker coordinate={mapRegion} title="Your Location" />
 
         {filtReports.map(
-          ({ _id, location: { lat, long }, species: { species } }) => {
+          ({ _id, img_url, location: { lat, long }, species: { species } }) => {
             return (
               <Marker
                 key={_id}
@@ -94,7 +94,7 @@ function Map({ reports }) {
                   <View>
                     <Text style={{ padding: 0, height: 200, width: 200 }}>
                       <Image
-                        source={require("../assets/mushroom-photo.jpeg")}
+                        source={{uri:img_url}}
                       />
                     </Text>
                     <Text>{species}</Text>
