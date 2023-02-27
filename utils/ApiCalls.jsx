@@ -44,3 +44,9 @@ export const getMushroomByCommonName = (commonName) => {
     return response.data.mushrooms[0];
   });
 };
+
+export const  patchReportById = (id, suggestedSpecies) => {
+  return apiCaller.patch(`/reports/${id}`, {suggestedSpecies}).then((response) => {
+    return response.data.report;
+  });
+};
