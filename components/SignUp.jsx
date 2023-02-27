@@ -1,4 +1,9 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  onAuthStateChanged,
+} from "firebase/auth";
 import React, { useState } from "react";
 import {
   View,
@@ -9,16 +14,29 @@ import {
 } from "react-native";
 
 const SignUp = () => {
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSignUp = () => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setPassword("");
-        setEmail("");
-        //console.log(userCredential);
+      .then(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            updateProfile(user, { displayName })
+              .then(() => {
+                setDisplayName("");
+                setPassword("");
+                setEmail("");
+                console.log("Profile updated successfully.");
+                unsubscribe(); // Unsubscribe the listener to avoid memory leaks
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -36,6 +54,12 @@ const SignUp = () => {
       <Text style={styles.fieldHeading}>Create an Account</Text>
       <TextInput
         style={styles.signUpField}
+        placeholder="Display Name"
+        value={displayName}
+        onChangeText={(text) => setDisplayName(text)}
+      />
+      <TextInput
+        style={styles.signUpField}
         placeholder="Enter Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
@@ -47,7 +71,7 @@ const SignUp = () => {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry={true}
       />
-      <TouchableOpacity onPress={handleSignUp}>
+      <TouchableOpacity onPress={() => handleSignUp()}>
         <Text style={styles.button}>Sign Up</Text>
       </TouchableOpacity>
     </View>

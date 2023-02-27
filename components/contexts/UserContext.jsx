@@ -9,8 +9,8 @@ export const UserProvider = ({ children }) => {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      setUser(user.email);
-      console.log("hello " + user.email);
+      setUser(user);
+      console.log("hello " + user.displayName);
     } else {
     }
   });

@@ -18,6 +18,7 @@ function LogIn() {
       .then((userCredential) => {
         setPassword("");
         setEmail("");
+        console.log(userCredential);
         //current user tracked in UserContext
       })
       .catch((err) => {
@@ -47,7 +48,7 @@ function LogIn() {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry={true}
       />
-      <TouchableOpacity onPress={handleLogIn}>
+      <TouchableOpacity onPress={() => handleLogIn()}>
         <Text style={styles.button}>Login</Text>
       </TouchableOpacity>
     </View>

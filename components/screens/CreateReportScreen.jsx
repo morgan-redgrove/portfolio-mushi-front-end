@@ -1,16 +1,21 @@
+import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
-
-import React, { useEffect, useState } from "react";
+import { storage } from "../../firebaseConfig";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { getMushrooms, postReport } from "../../utils/ApiCalls";
 import PinMap from "../PinMap";
+import { UserContext } from "../contexts/UserContext";
 
 function CreateReportScreen() {
+  const { user } = useContext(UserContext);
   const [species, setSpecies] = useState([]);
   const [selected, setSelected] = useState("");
   const [note, setNote] = useState("");
   const [image, setImage] = useState(null);
+  const [imgUrl, setImgUrl] = useState("");
   const [pinRegion, setPinRegion] = useState({
     latitude: 0,
     longitude: 0,
@@ -42,7 +47,29 @@ function CreateReportScreen() {
     }
   };
 
-  function submitReport() {}
+  const uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const imgRef = ref(storage, `${imageName}`);
+    const snapshot = await uploadBytes(imgRef, blob);
+    const url = await getDownloadURL(imgRef);
+    //console.log(url);
+    return url; //setstate
+
+    //console.log("uploaded to blob, URL: ", url);
+  };
+
+  function submitReport() {
+    uploadImage(image, uuid.v4()).then((url) => {
+      postReport(
+        { latitude: pinRegion.latitude, longitude: pinRegion.longitude },
+        url,
+        user.displayName,
+        selected,
+        note
+      );
+    });
+  }
 
   return (
     <View>
@@ -61,12 +88,16 @@ function CreateReportScreen() {
         style={styles.textInput}
         multiline={true}
         numberOfLines={4}
-        onChangeText={(text) => setNote({ text })}
+        onChangeText={(text) => setNote(text)}
         value={note}
       />
       <Text>Your Location</Text>
       <PinMap pinRegion={pinRegion} setPinRegion={setPinRegion} />
       <Text>{`LAT: ${pinRegion.latitude}  LONG: ${pinRegion.longitude}`}</Text>
+      <Button
+        title="test upload image"
+        onPress={(e) => uploadImage(image, uuid.v4())}
+      />
       <Button title="Add Report" onPress={submitReport} />
     </View>
   );
