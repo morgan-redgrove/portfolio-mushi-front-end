@@ -9,8 +9,10 @@ import { getMushrooms, postReport } from "../../utils/ApiCalls";
 import PinMap from "../PinMap";
 import { UserContext } from "../contexts/UserContext";
 
-function CreateReportScreen() {
+function CreateReportScreen({ navigation }) {
   const { user } = useContext(UserContext);
+  const [err, setErr] = useState(false);
+  const [complete, setComplete] = useState(false);
   const [species, setSpecies] = useState([]);
   const [selected, setSelected] = useState("");
   const [note, setNote] = useState("");
@@ -32,12 +34,26 @@ function CreateReportScreen() {
     });
   }, []);
 
+  useEffect(() => {
+    if (
+      //fields are completed
+      selected !== "" &&
+      image !== null &&
+      pinRegion.latitude !== 0 &&
+      pinRegion.longitude !== 0
+    ) {
+      setComplete(true);
+    } else {
+      setComplete(false);
+    }
+  }, [selected, image, pinRegion]);
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -63,7 +79,18 @@ function CreateReportScreen() {
         user.displayName,
         selected,
         note
-      );
+      ).then((report) => {
+        setSelected("");
+        setNote("");
+        setImage(null);
+        setPinRegion({
+          latitude: 0,
+          longitude: 0,
+          latitudeDelta: 0.00922,
+          longitudeDelta: 0.00421,
+        });
+        navigation.navigate("Report", { id: report._id });
+      }); //! Catch err if unsucseful post
     });
   }
 
@@ -89,15 +116,14 @@ function CreateReportScreen() {
       />
       <Text>Your Location</Text>
       <PinMap pinRegion={pinRegion} setPinRegion={setPinRegion} />
-      <Text>{`LAT: ${pinRegion.latitude}  LONG: ${pinRegion.longitude}`}</Text>
-      <Button title="Add Report" onPress={submitReport} />
+      <Button title="Add Report" onPress={submitReport} disabled={!complete} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   textInput: {
-    backgroundColor: "black",
+    backgroundColor: "gray",
     color: "white",
   },
 });
