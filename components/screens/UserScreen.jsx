@@ -1,23 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import LogIn from "../LogIn";
 import SignUp from "../SignUp";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { UserContext } from "../contexts/UserContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 function UserScreen() {
+  console.log(UserContext);
+  const { user } = useContext(UserContext);
   const [showSignUp, setShowSignUp] = useState(false);
 
-  return (
-    <View>
-      {showSignUp ? <SignUp /> : <LogIn />}
+  function handleSignOut() {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  }
+
+  if (user) {
+    return (
       <TouchableOpacity>
-        <Text onPress={() => setShowSignUp(!showSignUp)} style={styles.button}>
-          {showSignUp === false
-            ? "Click here to create a new account"
-            : "Click here to login"}
+        <Text onPress={() => handleSignOut()} style={styles.button}>
+          Logout
         </Text>
       </TouchableOpacity>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View>
+        {showSignUp ? <SignUp /> : <LogIn />}
+        <TouchableOpacity>
+          <Text
+            onPress={() => setShowSignUp(!showSignUp)}
+            style={styles.button}
+          >
+            {showSignUp === false
+              ? "Click here to create a new account"
+              : "Click here to login"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
