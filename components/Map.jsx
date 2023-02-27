@@ -8,6 +8,7 @@ import * as Location from "expo-location";
 function Map({ reports }) {
   const navigation = useNavigation();
 
+
   const [isLoading, setIsLoading] = useState(true);
   const [selected, setSelected] = useState("");
   const [filtReports, setFiltReports] = useState(reports);
