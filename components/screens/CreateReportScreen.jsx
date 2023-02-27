@@ -119,6 +119,9 @@ function CreateReportScreen({ navigation }) {
       <Text>Your Location</Text>
       <PinMap pinRegion={pinRegion} setPinRegion={setPinRegion} />
       <Button title="Add Report" onPress={submitReport} disabled={!complete} />
+      <Text>
+        {auth.currentUser === null ? "Please Sign in to post a report" : ""}
+      </Text>
     </View>
   );
 }
