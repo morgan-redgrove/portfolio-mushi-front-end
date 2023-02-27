@@ -20,7 +20,6 @@ function Map({ reports }) {
   const options = uniqueSpecies.map((str) => {
     return { value: str };
   });
-  console.log(options);
 
   const [mapRegion, setMapRegion] = useState({
     latitude: 53.4809634,

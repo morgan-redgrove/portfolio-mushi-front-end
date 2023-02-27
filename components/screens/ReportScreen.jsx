@@ -8,16 +8,36 @@ import {
   FlatList,
   Modal,
 } from "react-native";
-import { getReportById, getMushroomByCommonName } from "../../utils/ApiCalls";
+import { getReportById, getMushroomByCommonName, patchReportById } from "../../utils/ApiCalls";
+import Map from "../Map";
+import { getMushrooms } from "../../utils/ApiCalls";
+import { SelectList } from "react-native-dropdown-select-list";
+
 
 function ReportScreen({ route }) {
   const { id } = route.params;
   const [report, setReport] = useState(null);
   const [mushroomInfo, setMushroomInfo] = useState(null);
+  const [mushrooms, setMushrooms] = useState([])
   const [isInfoVisible, setIsInfoVisible] = useState(false);
+  const [selected, setSelected] = useState("");
+
+  const options = mushrooms.map(({commonName}) => {
+    return { value: commonName }
+    })
+  
+
 
   useEffect(() => {
-    getReportById(id).then((report) => {
+
+  })
+
+  useEffect(() => {
+    getMushrooms().then((mushrooms) => {
+      setMushrooms(mushrooms)
+    })
+    .then(() => {
+          getReportById(id).then((report) => {
       setReport(report);
       getMushroomByCommonName(report.species.species)
         .then((mushroom) => {
@@ -27,7 +47,16 @@ function ReportScreen({ route }) {
           console.log("Error while fetching mushroom info: ", error);
         });
     });
+    })
+
   }, []);
+
+  const voteForSpecies = (id, suggestedSpecies) => {
+    patchReportById(id, suggestedSpecies).then((report) => {
+      console.log("Vote cast")
+      setReport(report)
+    })
+  }
 
   const handleMoreInfo = () => {
     setIsInfoVisible(true);
@@ -46,9 +75,6 @@ function ReportScreen({ route }) {
   } else {
     return (
       <View>
-        <Text>
-          lat: {report.location.lat} long: {report.location?.long}
-        </Text>
         <Text>username: {report.username}</Text>
         <Text>timestamp: {report.time_stamp}</Text>
         <Text>notes: {report.notes}</Text>
@@ -62,14 +88,23 @@ function ReportScreen({ route }) {
           renderItem={({ item: { species, votes } }) => (
             <View>
               <Text>
-                {" "}
                 - species: {species} votes: {votes}
               </Text>
+              <Button   
+                onPress={() => {voteForSpecies(id, species)}}
+                title="Up vote!"/>
             </View>
           )}
         />
-        <Text>prevalence: {report.prevalence}</Text>
-
+        <SelectList
+          setSelected={(val) => setSelected(val)}
+          data={options}
+          save="value"
+          placeholder="Suggest an alternate species..."
+        />
+        <Button   
+          onPress={() => {voteForSpecies(id, selected)}}
+          title="Submit suggestion"/>
         <Button title="More Info" onPress={handleMoreInfo} />
         {isInfoVisible && (
           <Modal animationType="slide">
@@ -95,4 +130,5 @@ function ReportScreen({ route }) {
     );
   }
 }
+
 export default ReportScreen;
