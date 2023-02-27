@@ -8,6 +8,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { getMushrooms, postReport } from "../../utils/ApiCalls";
 import PinMap from "../PinMap";
 import { UserContext } from "../contexts/UserContext";
+import { auth } from "../../firebaseConfig";
 
 function CreateReportScreen({ navigation }) {
   const { user } = useContext(UserContext);
@@ -40,7 +41,8 @@ function CreateReportScreen({ navigation }) {
       selected !== "" &&
       image !== null &&
       pinRegion.latitude !== 0 &&
-      pinRegion.longitude !== 0
+      pinRegion.longitude !== 0 &&
+      auth.currentUser !== null
     ) {
       setComplete(true);
     } else {
