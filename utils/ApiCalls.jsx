@@ -29,7 +29,7 @@ export const postReport = (location, img_url, username, species, note) => {
     img_url,
     username,
     time_stamp,
-    species: { species, votes: 0 },
+    species: { species, votes: 1 },
     notes: note,
   };
   console.log(report, "<<< report to be posted");
