@@ -108,6 +108,7 @@ function Map({ reports }) {
       {isHidden ? null : (
         <View style={styles.modal}>
           <View style={styles.card}>
+            <Image source={{uri: modalInfo.img_url}}/>
             <Text>{modalInfo.species}</Text>
             <TouchableOpacity
               onPress={() => {
