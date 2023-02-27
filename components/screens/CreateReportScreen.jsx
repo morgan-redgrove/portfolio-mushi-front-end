@@ -46,13 +46,6 @@ function CreateReportScreen({ navigation }) {
     } else {
       setComplete(false);
     }
-    // console.log(
-    //   selected,
-    //   image,
-    //   pinRegion.latitude,
-    //   pinRegion.longitude,
-    //   complete
-    // );
   }, [selected, image, pinRegion]);
 
   const pickImage = async () => {
