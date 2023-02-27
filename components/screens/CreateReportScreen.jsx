@@ -9,7 +9,7 @@ import { getMushrooms, postReport } from "../../utils/ApiCalls";
 import PinMap from "../PinMap";
 import { UserContext } from "../contexts/UserContext";
 
-function CreateReportScreen() {
+function CreateReportScreen({ navigation }) {
   const { user } = useContext(UserContext);
   const [species, setSpecies] = useState([]);
   const [selected, setSelected] = useState("");
@@ -63,7 +63,18 @@ function CreateReportScreen() {
         user.displayName,
         selected,
         note
-      );
+      ).then((report) => {
+        setSelected("");
+        setNote("");
+        setImage(null);
+        setPinRegion({
+          latitude: 0,
+          longitude: 0,
+          latitudeDelta: 0.00922,
+          longitudeDelta: 0.00421,
+        });
+        navigation.navigate("Report", { id: report._id });
+      }); //! Catch err if unsucseful post
     });
   }
 
