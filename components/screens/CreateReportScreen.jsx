@@ -15,7 +15,6 @@ function CreateReportScreen() {
   const [selected, setSelected] = useState("");
   const [note, setNote] = useState("");
   const [image, setImage] = useState(null);
-  const [imgUrl, setImgUrl] = useState("");
   const [pinRegion, setPinRegion] = useState({
     latitude: 0,
     longitude: 0,
@@ -51,12 +50,9 @@ function CreateReportScreen() {
     const response = await fetch(uri);
     const blob = await response.blob();
     const imgRef = ref(storage, `${imageName}`);
-    const snapshot = await uploadBytes(imgRef, blob);
+    const snapshot = await uploadBytes(imgRef, blob); // waits for img upload
     const url = await getDownloadURL(imgRef);
-    //console.log(url);
-    return url; //setstate
-
-    //console.log("uploaded to blob, URL: ", url);
+    return url;
   };
 
   function submitReport() {
@@ -94,10 +90,6 @@ function CreateReportScreen() {
       <Text>Your Location</Text>
       <PinMap pinRegion={pinRegion} setPinRegion={setPinRegion} />
       <Text>{`LAT: ${pinRegion.latitude}  LONG: ${pinRegion.longitude}`}</Text>
-      <Button
-        title="test upload image"
-        onPress={(e) => uploadImage(image, uuid.v4())}
-      />
       <Button title="Add Report" onPress={submitReport} />
     </View>
   );

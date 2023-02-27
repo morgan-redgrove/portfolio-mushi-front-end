@@ -13,13 +13,6 @@ function PinMap({ pinRegion, setPinRegion }) {
     longitudeDelta: 0.00421,
   });
 
-  // const [pinRegion, setPinRegion] = useState({
-  //   latitude: 0,
-  //   longitude: 0,
-  //   latitudeDelta: 0.00922,
-  //   longitudeDelta: 0.00421,
-  // });
-
   const getUserLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
