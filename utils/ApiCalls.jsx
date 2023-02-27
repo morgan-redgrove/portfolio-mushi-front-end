@@ -6,7 +6,6 @@ const apiCaller = axios.create({
 
 export const getReports = () => {
   return apiCaller.get("/reports").then((response) => {
-    // console.log(response.data, "<<<<<RES");
     return response.data.reports;
   });
 };
@@ -37,5 +36,11 @@ export const postReport = (location, img_url, username, species, note) => {
   return apiCaller.post("/reports", { report }).then((response) => {
     console.log("Post report sucsessfull");
     return response.data.report;
+  });
+};
+
+export const getMushroomByCommonName = (commonName) => {
+  return apiCaller.get(`/mushrooms/${commonName}`).then((response) => {
+    return response.data.mushrooms[0];
   });
 };

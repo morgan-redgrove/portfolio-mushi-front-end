@@ -76,12 +76,12 @@ function Map({reports}) {
           return (<Marker key={_id} coordinate={{
             latitude: lat,
             longitude: long
-          }} title= ""  image={require("../assets/mushroom-icon.png")}>
+          }} image={require("../assets/mushroom-icon.png")}>
             <Callout onPress={() => navigation.navigate('Report', { id: _id})}>
               <View>
 
                 <Text
-                  style={{padding: 0, rheight:200, width:200}}
+                  style={{padding: 0, height:200, width:200}}
                 >
                   <Image
                     source={require("../assets/mushroom-photo.jpeg")}
