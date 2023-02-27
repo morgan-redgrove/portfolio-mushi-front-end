@@ -9,14 +9,18 @@ function Map({ reports }) {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [selected, setSelected] = useState(String);
+  const [selected, setSelected] = useState("");
   const [filtReports, setFiltReports] = useState(reports);
 
   const species = reports.map((report) => {
-    return { value: report.species.species };
+    return report.species.species;
   });
+  let uniqueSpecies = ["Show All", ...new Set(species)];
 
-  const options = [{ value: "Show All" }, ...species];
+  const options = uniqueSpecies.map((str) => {
+    return { value: str };
+  });
+  console.log(options);
 
   const [mapRegion, setMapRegion] = useState({
     latitude: 53.4809634,
@@ -81,7 +85,7 @@ function Map({ reports }) {
                 coordinate={
                   lat && long
                     ? { latitude: lat, longitude: long }
-                    : { latitude: 1, longitude: 1 }
+                    : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
                 }
                 image={require("../assets/mushroom-icon.png")}
               >

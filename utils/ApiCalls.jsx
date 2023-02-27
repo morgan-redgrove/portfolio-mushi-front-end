@@ -29,10 +29,10 @@ export const postReport = (location, img_url, username, species, note) => {
     img_url,
     username,
     time_stamp,
-    species,
-    note,
+    species: { species, votes: 0 },
+    notes: note,
   };
-  //console.log(report, "<<< report to be posted");
+  console.log(report, "<<< report to be posted");
   return apiCaller.post("/reports", { report }).then((response) => {
     console.log("Post report sucsessfull");
     return response.data.report;

@@ -62,7 +62,7 @@ function CreateReportScreen() {
   function submitReport() {
     uploadImage(image, uuid.v4()).then((url) => {
       postReport(
-        { latitude: pinRegion.latitude, longitude: pinRegion.longitude },
+        { lat: pinRegion.latitude, long: pinRegion.longitude },
         url,
         user.displayName,
         selected,
