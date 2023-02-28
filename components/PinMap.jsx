@@ -64,8 +64,10 @@ function PinMap({ pinRegion, setPinRegion }) {
 
 const styles = StyleSheet.create({
   map: {
-    width: "100%",
-    height: 200,
+    width: "90%",
+    height: 300,
+    alignSelf: "center",
+    borderRadius: 10,
   },
 });
 export default PinMap;
