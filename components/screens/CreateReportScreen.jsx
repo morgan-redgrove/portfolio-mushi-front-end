@@ -3,7 +3,15 @@ import * as ImagePicker from "expo-image-picker";
 import { storage } from "../../firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useState, useContext } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { getMushrooms, postReport } from "../../utils/ApiCalls";
 import PinMap from "../PinMap";
@@ -97,39 +105,140 @@ function CreateReportScreen({ navigation }) {
   }
 
   return (
-    <View>
-      <Text>Select a species</Text>
+    <View style={styles.main}>
+      <View style={styles.inputContainer}>
+        <TouchableOpacity style={styles.imgButton} onPress={pickImage}>
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={styles.img}
+              resizeMode={"cover"}
+            />
+          ) : (
+            <Image
+              onPress={pickImage}
+              style={styles.imgIcon}
+              source={require("../../assets/add-image.png")}
+            />
+          )}
+        </TouchableOpacity>
+
+        <TextInput
+          placeholder="Add a description ..."
+          style={styles.textInput}
+          multiline={true}
+          // numberOfLines={4}
+          onChangeText={(text) => setNote(text)}
+          value={note}
+        />
+      </View>
       <SelectList
+        placeholder="Select Species... (or your best guess!)"
+        boxStyles={styles.dropDown}
+        dropdownStyles={[styles.dropDown, styles.dropDownBox]}
         setSelected={(val) => setSelected(val)}
         data={species}
         save="value"
       />
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      <Text>Add a description</Text>
-      <TextInput
-        style={styles.textInput}
-        multiline={true}
-        numberOfLines={4}
-        onChangeText={(text) => setNote(text)}
-        value={note}
+      <PinMap
+        pinRegion={pinRegion}
+        setPinRegion={setPinRegion}
+        style={styles.map}
       />
-      <Text>Your Location</Text>
-      <PinMap pinRegion={pinRegion} setPinRegion={setPinRegion} />
-      <Button title="Add Report" onPress={submitReport} disabled={!complete} />
-      <Text>
-        {auth.currentUser === null ? "Please Sign in to post a report" : ""}
-      </Text>
+
+      {auth.currentUser === null ? (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("User");
+          }}
+        >
+          <Text style={styles.warn}>Please Sign in to post a report!</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={submitReport}
+          disabled={!complete}
+        >
+          <Text>Add Report</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  main: {
+    backgroundColor: "rgb(31, 35, 53)",
+    height: "100%",
+  },
+  dropDown: {
+    width: "90%",
+    alignSelf: "center",
+    margin: 15,
+    marginTop: 10,
+    borderWidth: 3,
+    backgroundColor: "rgba(255,255,255,.8)",
+    borderColor: "rgb(15, 163, 177)",
+  },
+  dropDownBox: {
+    marginTop: 0,
+  },
+  imgIcon: {
+    width: 100,
+    height: 100,
+    margin: 25,
+    tintColor: "rgb(15, 163, 177)",
+  },
+  inputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    padding: 5,
+    width: "90%",
+    alignSelf: "center",
+    marginTop: 15,
+  },
+  imgButton: {
+    borderRadius: 10,
+  },
+  img: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
   textInput: {
-    backgroundColor: "gray",
-    color: "white",
+    backgroundColor: "rgba(255,255,255,.8)",
+    borderColor: "rgb(15, 163, 177)",
+    borderWidth: 3,
+    borderRadius: 10,
+    flex: 1,
+    padding: 10,
+    marginLeft: 15,
+  },
+  button: {
+    margin: 15,
+    alignSelf: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 200,
+    height: 50,
+    borderWidth: 3,
+    borderRadius: 10,
+    backgroundColor: "rgba(255,255,255,.8)",
+    borderColor: "rgb(15, 163, 177)",
+  },
+  warn: {
+    alignSelf: "center",
+    marginTop: 15,
+    textAlign: "center",
+    fontSize: 20,
+    borderWidth: 3,
+    borderColor: "rgb(255, 130, 80)",
+    color: "rgb(255, 130, 80)",
+    width: "90%",
+    padding: 8,
+    borderRadius: 10,
   },
 });
 
