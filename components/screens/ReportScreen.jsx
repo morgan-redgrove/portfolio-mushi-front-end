@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,24 +8,29 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+
 import {
   getReportById,
   getMushroomByCommonName,
   patchReportById,
+  getMushrooms,
+  deleteReportById,
 } from "../../utils/ApiCalls";
-import Map from "../Map";
-import { getMushrooms } from "../../utils/ApiCalls";
 import { SelectList } from "react-native-dropdown-select-list";
+import { UserContext } from "../contexts/UserContext";
 import { Species } from "../Species";
 
-function ReportScreen({ route }) {
+function ReportScreen({ route, navigation }) {
   const { id } = route.params;
+  const {
+    user: { displayName },
+  } = useContext(UserContext);
+
   const [report, setReport] = useState(null);
   const [mushroomInfo, setMushroomInfo] = useState(null);
   const [mushrooms, setMushrooms] = useState([]);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [selected, setSelected] = useState("");
-
   const options = mushrooms.map(({ commonName }) => {
     return { value: commonName };
   });
@@ -55,6 +60,12 @@ function ReportScreen({ route }) {
     patchReportById(id, suggestedSpecies).then((report) => {
       console.log("Vote cast");
       setReport(report);
+    });
+  };
+
+  const deleteReport = (id) => {
+    deleteReportById(id).then(() => {
+      navigation.navigate("Map", { paramPropKey: "paramPropValue" });
     });
   };
 
@@ -127,6 +138,15 @@ function ReportScreen({ route }) {
             )}
           />
         </View>
+
+        {report.username === displayName ? (
+          <Button
+            title="Delete Report"
+            onPress={() => {
+              deleteReport(id);
+            }}
+          />
+        ) : null}
 
         {isInfoVisible && (
           <Species

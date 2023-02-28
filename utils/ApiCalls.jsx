@@ -50,3 +50,9 @@ export const  patchReportById = (id, suggestedSpecies) => {
     return response.data.report;
   });
 };
+
+export const  deleteReportById = (id) => {
+  return apiCaller.delete(`/reports/${id}`).then((response) => {
+    return response.data.report;
+  });
+};
