@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, Animated} from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  Animated,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import MapView, { Marker} from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
 
@@ -16,10 +24,10 @@ function Map({ reports }) {
     species: "Select a Mushroom",
     img_url: "",
   });
-  const [mapRegion, setMapRegion] = useState(null);
-  const [focusMarker, setFocusMarker] = useState(null)
-  const _map = useRef(null)
 
+  const [mapRegion, setMapRegion] = useState(null);
+  const [focusMarker, setFocusMarker] = useState(null);
+  const _map = useRef(null);
 
   const species = reports.map((report) => {
     return report.species.species;
@@ -49,30 +57,13 @@ function Map({ reports }) {
     });
   };
 
-  const mapAnimation = new Animated.Value(0)
+  const mapAnimation = new Animated.Value(0);
 
   useEffect(() => {
     getUserLocation().then(() => {
       setIsLoading(false);
     });
-    mapAnimation.addListener(({value}) => {
-      clearTimeout(regionTimeout)
-
-      const regionTimeout = setTimeout(()=>{
-         _map.current.animateToRegion(
-          {
-            ...focusMarker,
-            latitudeDelta: 0.00922,
-            longitudeDelta: 0.00421
-          }
-          , 350
-         )
-         
-      }, 10)
-    })
   }, []);
-
-
 
   return (
     <View>
@@ -94,48 +85,37 @@ function Map({ reports }) {
         }
       />
 
-      {isLoading ?
-      <View>
-        <Text>
-          Loading...
-        </Text>
-      </View>
-      : null
-    }
+      {isLoading ? (
+        <View>
+          <Text>Loading...</Text>
+        </View>
+      ) : null}
 
-      <MapView region={mapRegion} ref= {_map} mapType="satellite" showsUserLocation= "true" style={styles.map}>
+      <MapView
+        region={mapRegion}
+        ref={_map}
+        mapType="satellite"
+        showsUserLocation="true"
+        style={styles.map}
+      >
         {filtReports.map(
           ({ _id, img_url, location: { lat, long }, species: { species } }) => {
             return (
-                <Marker
-                  key={_id}
-                  coordinate={
-                    lat && long
-                      ? { latitude: lat, longitude: long }
-                      : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
-                  }
-                  image={require("../assets/mushroom-icon.png")}
-                  onPress={() => {
-                    setIsHidden(false);
-                    setModalInfo({ species, img_url, _id, lat, long});
-                    // setMapRegion({latitude: lat, longitude: long, latitudeDelta: 0.00922,
-                    //   longitudeDelta: 0.00421,})
-                    setFocusMarker({latitude: lat, longitude: long})
-                    Animated.event(
-                      [
-                        {
-                          nativeEvent:{
-                            contentOffSet: {
-                              x: mapAnimation
-                            }
-                          }
-                        }
-                      ],
-                      {useNativeDriver: true}
-                    )
-                  }}
-                ></Marker>
-            )
+              <Marker
+                key={_id}
+                coordinate={
+                  lat && long
+                    ? { latitude: lat, longitude: long }
+                    : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
+                }
+                image={require("../assets/mushroom-icon.png")}
+                onPress={() => {
+                  setIsHidden(false);
+                  setModalInfo({ species, img_url, _id, lat, long });
+                  setFocusMarker({ latitude: lat, longitude: long });
+                }}
+              ></Marker>
+            );
           }
         )}
       </MapView>
@@ -144,15 +124,27 @@ function Map({ reports }) {
         <View style={styles.modal}>
           <View style={styles.card}>
             <TouchableOpacity
+              style={styles.modalClose}
               onPress={() => {
                 setIsHidden(true);
               }}
-              >
-                <Text>X</Text>
+            >
+              <Text>X</Text>
             </TouchableOpacity>
-            <Image source={{uri: modalInfo.img_url}} alt ={`sighting of a ${modalInfo.species}`} style = {styles.cardImage}/>
-            <Text>{modalInfo.species}</Text>
+            <View style={styles.flexBox}>
+
+              <Image
+                source={{ uri: modalInfo.img_url }}
+                alt={`sighting of a ${modalInfo.species}`}
+                style={styles.cardImage}
+                />
+
+                <View style= {styles.cardText}>
+                <Text>{modalInfo.species}</Text>
+                </View>
+            </View>
             <TouchableOpacity
+              style={styles.reportButton}
               onPress={() =>
                 navigation.navigate("Report", { id: modalInfo._id })
               }
@@ -167,9 +159,8 @@ function Map({ reports }) {
 }
 
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = 220;
+const CARD_HEIGHT = 0.25 * height;
 const CARD_WIDTH = width * 0.8;
-const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const styles = StyleSheet.create({
   map: {
@@ -178,21 +169,45 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: "absolute",
-    bottom: 50,
+    bottom: 0.12 * height,
     left: 0,
     right: 0,
     paddingVertical: 10,
+    margin: 10,
+  },
+  modalClose: {
+    position: "absolute",
+    right: 0,
   },
   card: {
     backgroundColor: "#FFF",
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
+    alignSelf: "center",
+    borderRadius: 5,
+    padding: 10,
+  },
+  flexBox: {
+    width:"100%",
+    height: "80%",
+    flexDirection: 'row',
+    justifyContent:"space-between" ,
+    paddingBottom: 10,
   },
   cardImage: {
-    flex: 3,
+    flex: 1,
     width: "100%",
     height: "100%",
     alignSelf: "center",
+  },
+  cardText:{
+    flex:1,
+    alignItems: "center",
+  },
+  reportButton: {
+    padding: 10,
+    borderWidth: 1,
+    alignItems: "center",
   },
 });
 export default Map;
