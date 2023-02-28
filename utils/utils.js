@@ -1,5 +1,5 @@
 exports.addMonthsToGraph = (months) => {
-  return [
+  const graphData = [
     { value: 0, label: "Jan" },
     { value: 0, label: "Feb" },
     { value: 0, label: "Mar" },
@@ -13,4 +13,11 @@ exports.addMonthsToGraph = (months) => {
     { value: 0, label: "Nov" },
     { value: 0, label: "Dec" },
   ];
+
+  return graphData.map((graphDatum) => {
+    if (months.includes(graphDatum.label)) {
+      return { value: 1, label: graphDatum.label };
+    }
+    return graphDatum;
+  });
 };
