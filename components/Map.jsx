@@ -85,11 +85,6 @@ function Map({ reports }) {
         }
       />
 
-      {isLoading ? (
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      ) : null}
 
       <MapView
         region={mapRegion}
@@ -102,23 +97,28 @@ function Map({ reports }) {
           ({ _id, img_url, location: { lat, long }, species: { species } }) => {
             return (
               <Marker
-                key={_id}
-                coordinate={
-                  lat && long
-                    ? { latitude: lat, longitude: long }
-                    : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
-                }
+              key={_id}
+              coordinate={
+                lat && long
+                ? { latitude: lat, longitude: long }
+                : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
+              }
                 image={require("../assets/mushroom-icon.png")}
                 onPress={() => {
                   setIsHidden(false);
                   setModalInfo({ species, img_url, _id, lat, long });
                   setFocusMarker({ latitude: lat, longitude: long });
                 }}
-              ></Marker>
-            );
-          }
-        )}
+                ></Marker>
+                );
+              }
+              )}
       </MapView>
+              {isLoading ? (
+                <View style={styles.loadingModal}>
+                  <Text>Getting your Location...</Text>
+                </View>)
+              : null}
 
       {isHidden ? null : (
         <View style={styles.modal}>
@@ -209,5 +209,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: "center",
   },
+  loadingModal: {
+    position: "absolute",
+    backgroundColor: "#FFF",
+    padding:10,
+top: "25%",
+alignSelf: "center"
+
+  }
 });
 export default Map;
