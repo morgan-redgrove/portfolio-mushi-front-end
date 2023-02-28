@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,14 +7,16 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { getReportById, getMushroomByCommonName, patchReportById } from "../../utils/ApiCalls";
-import Map from "../Map";
-import { getMushrooms } from "../../utils/ApiCalls";
+import { getReportById, getMushroomByCommonName, patchReportById, getMushrooms, deleteReportById } from "../../utils/ApiCalls";
 import { SelectList } from "react-native-dropdown-select-list";
+import { UserContext } from "../contexts/UserContext"
 import {Species} from '../Species'
 
-function ReportScreen({ route }) {
+
+function ReportScreen({ route, navigation }) {
   const { id } = route.params;
+  const { user: {displayName} } = useContext(UserContext)
+
   const [report, setReport] = useState(null);
   const [mushroomInfo, setMushroomInfo] = useState(null);
   const [mushrooms, setMushrooms] = useState([])
@@ -24,12 +26,6 @@ function ReportScreen({ route }) {
   const options = mushrooms.map(({commonName}) => {
     return { value: commonName }
     })
-  
-
-
-  useEffect(() => {
-
-  })
 
   useEffect(() => {
     getMushrooms().then((mushrooms) => {
@@ -54,6 +50,12 @@ function ReportScreen({ route }) {
     patchReportById(id, suggestedSpecies).then((report) => {
       console.log("Vote cast")
       setReport(report)
+    })
+  }
+
+  const deleteReport = (id) => {
+    deleteReportById(id). then(() => {
+      navigation.navigate("Map", {'paramPropKey': 'paramPropValue'})
     })
   }
 
@@ -86,7 +88,7 @@ function ReportScreen({ route }) {
                 - species: {species} votes: {votes}
               </Text>
               <Button   
-                onPress={() => {voteForSpecies(id, species)}}
+                onPress={() => {() => {voteForSpecies(id, species)}}}
                 title="Up vote!"/>
             </View>
           )}
@@ -97,6 +99,12 @@ function ReportScreen({ route }) {
           save="value"
           placeholder="Suggest an alternate species..."
         />
+        {report.username === displayName?         
+        <Button 
+          title="Delete Report"
+          onPress={() => {deleteReport(id)}}/> :
+          null
+        }
         <Button   
           onPress={() => {voteForSpecies(id, selected)}}
           title="Submit suggestion"/>
