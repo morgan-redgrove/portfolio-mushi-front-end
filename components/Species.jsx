@@ -1,6 +1,6 @@
 import { Modal, View, Text, Button, StyleSheet, ScrollView, Dimensions} from "react-native";
 import { BarChart } from "react-native-gifted-charts";
-
+import {addMonthsToGraph} from '../utils/utils'
 
 
 export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
@@ -10,21 +10,7 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
 
   const {width} = Dimensions.get("window")
 
-  const barData = [
-    {value: 1, label: 'Jan'},
-    {value: 1, label: 'Feb', frontColor: '#177AD5'},
-    {value: 1, label: 'Mar', frontColor: '#177AD5'},
-    {value: 1, label: 'Apr'},
-    {value: 1, label: 'May', frontColor: '#177AD5'},
-    {value: 1, label: 'Jun'},
-    {value: 1, label: 'Jul'},
-    {value: 1, label: 'Aug'},
-    {value: 1, label: 'Sep'},
-    {value: 1, label: 'Oct'},
-    {value: 1, label: 'Nov'},
-    {value: 1, label: 'Dec'},
-];
-
+  const graphData = addMonthsToGraph(mushroomInfo.months)
 
   return (
     <Modal animationType="slide" transparent={true}>
@@ -32,13 +18,12 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
         <Text style={styles.h1}>{mushroomInfo?.commonName}</Text>
         <Text style={styles.h2}>{mushroomInfo?.latinName}</Text>
 
-
        <BarChart
        barWidth={22}
        noOfSections={1}
        barBorderRadius={4}
        frontColor="lightgray"
-       data={barData}
+       data={graphData}
        yAxisThickness={0}
        hideYAxisText
        xAxisThickness={0}
