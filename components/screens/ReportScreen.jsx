@@ -9,12 +9,8 @@ import {
 } from "react-native";
 import { getReportById, getMushroomByCommonName, patchReportById, getMushrooms, deleteReportById } from "../../utils/ApiCalls";
 import { SelectList } from "react-native-dropdown-select-list";
-<<<<<<< HEAD
 import { UserContext } from "../contexts/UserContext"
-
-=======
 import {Species} from '../Species'
->>>>>>> 8d1d45d1aceae714eed4a3805325203660259c8b
 
 
 function ReportScreen({ route, navigation }) {
@@ -59,7 +55,7 @@ function ReportScreen({ route, navigation }) {
 
   const deleteReport = (id) => {
     deleteReportById(id). then(() => {
-      navigation.navigate("Map")
+      navigation.navigate("Map", {'paramPropKey': 'paramPropValue'})
     })
   }
 
