@@ -30,6 +30,7 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
        maxValue= {1}
        height= {20}
        initialSpacing= {0}
+       spacing={5}
     hideRules
        />
     
@@ -43,7 +44,6 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
         <ScrollView>
         <Text>Habitat: {mushroomInfo?.habitat}</Text>
         </ScrollView>
-        <Text>Months: {mushroomInfo?.months.join(", ")}</Text>
         <Text>Colors: {mushroomInfo?.colors.join(", ")}</Text>
         <Text>Toxic: {mushroomInfo?.toxic ? "Yes" : "No"}</Text>
         <Text>Average Height: {mushroomInfo?.averageHeight}mm</Text>
