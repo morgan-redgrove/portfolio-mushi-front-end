@@ -18,7 +18,7 @@ function LogIn() {
       .then((userCredential) => {
         setPassword("");
         setEmail("");
-        console.log(userCredential);
+
         //current user tracked in UserContext
       })
       .catch((err) => {
@@ -34,7 +34,7 @@ function LogIn() {
         alignItems: "center",
       }}
     >
-      <Text style={styles.fieldHeading}>Login</Text>
+      <Text style={styles.fieldHeading}>Existing User</Text>
       <TextInput
         style={styles.signUpField}
         placeholder="Enter Email"

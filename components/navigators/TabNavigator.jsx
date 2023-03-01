@@ -10,7 +10,7 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "rgb(15, 163, 177)",
+        tabBarActiveTintColor: "white",
         tabBarStyle: {
           backgroundColor: "rgb(131, 135, 153)",
         },
@@ -22,11 +22,7 @@ const TabNavigator = () => {
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
-            <Entypo
-              name="home"
-              color={focused ? "rgb(15, 163, 177)" : "black"}
-              size={34}
-            />
+            <Entypo name="home" color={focused ? "white" : "black"} size={34} />
           ),
           // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
@@ -41,7 +37,7 @@ const TabNavigator = () => {
             <MaterialCommunityIcons
               name="google-maps"
               size={34}
-              color={focused ? "rgb(15, 163, 177)" : "black"}
+              color={focused ? "white" : "black"}
             />
           ),
           // tabBarLabelStyle: { fontSize: 10 },
@@ -57,7 +53,7 @@ const TabNavigator = () => {
             <MaterialCommunityIcons
               name="mushroom"
               size={34}
-              color={focused ? "rgb(15, 163, 177)" : "black"}
+              color={focused ? "white" : "black"}
             />
           ),
           // tabBarLabelStyle: { fontSize: 10 },
@@ -72,7 +68,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused }) => (
             <FontAwesome
               name="user"
-              color={focused ? "rgb(15, 163, 177)" : "black"}
+              color={focused ? "white" : "black"}
               size={34}
             />
           ),

@@ -7,7 +7,6 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
 function UserScreen() {
-  console.log(UserContext);
   const { user } = useContext(UserContext);
   const [showSignUp, setShowSignUp] = useState(false);
 
