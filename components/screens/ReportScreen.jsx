@@ -18,14 +18,13 @@ import {
 } from "../../utils/ApiCalls";
 import { SelectList } from "react-native-dropdown-select-list";
 import { UserContext } from "../contexts/UserContext";
+import { auth } from "../../firebaseConfig";
 import { Species } from "../Species";
 
 function ReportScreen({ route, navigation }) {
   const { id } = route.params;
-  const {
-    user: { displayName },
-  } = useContext(UserContext);
-
+  // const { user } = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useState("");
   const [report, setReport] = useState(null);
   const [mushroomInfo, setMushroomInfo] = useState(null);
   const [mushrooms, setMushrooms] = useState([]);
@@ -43,8 +42,12 @@ function ReportScreen({ route, navigation }) {
         setMushrooms(mushrooms);
       })
       .then(() => {
+        if (auth.currentUser) {
+          setCurrentUser(auth.currentUser.displayName);
+        }
         getReportById(id).then((report) => {
           setReport(report);
+          console.log(report);
           getMushroomByCommonName(report.species.species)
             .then((mushroom) => {
               setMushroomInfo(mushroom);
@@ -85,10 +88,10 @@ function ReportScreen({ route, navigation }) {
         <View style={styles.topSection}>
           <Image style={styles.img} source={{ uri: report.img_url }} />
           <View style={styles.mainSpecies}>
-            <Text>Species</Text>
+            <View style={styles.tab}></View>
+            <Text style={styles.label}>Species </Text>
             <Text>{report.species.species}</Text>
             <Button title="More Info" onPress={handleMoreInfo} />
-            <Text>votes: {report.species.votes}</Text>
             <Text>credibility: {report.credibility}</Text>
             <View style={styles.userDate}>
               <Text>Submitted by: {report.username}</Text>
@@ -96,24 +99,29 @@ function ReportScreen({ route, navigation }) {
             </View>
           </View>
         </View>
-        <Text style={styles.notes}>notes: {report.notes}</Text>
+        <View style={styles.notes}>
+          <View style={styles.tab}></View>
+          <Text style={styles.label}>Notes</Text>
+          <Text>{report.notes}</Text>
+        </View>
 
         <View style={styles.voteSection}>
+          <View style={styles.tab}></View>
+          <Text style={styles.label}>Votes</Text>
           <View style={styles.voteSectionLeft}>
-            <Text>alternate species:</Text>
             <SelectList
               boxStyles={styles.dropDown}
               setSelected={(val) => setSelected(val)}
               data={options}
               save="value"
-              placeholder=" "
+              placeholder="Vote on species"
             />
             <TouchableOpacity
               onPress={() => {
                 voteForSpecies(id, selected);
               }}
             >
-              <Text>Submit suggestion</Text>
+              <Text>Submit Vote</Text>
             </TouchableOpacity>
           </View>
 
@@ -139,7 +147,7 @@ function ReportScreen({ route, navigation }) {
           />
         </View>
 
-        {report.username === displayName ? (
+        {report.username === currentUser ? (
           <Button
             title="Delete Report"
             onPress={() => {
@@ -165,12 +173,22 @@ const styles = StyleSheet.create({
     height: "100%",
     padding: 10,
   },
+  label: { position: "absolute", left: 10, top: 5 },
+  tab: {
+    borderRadius: 5,
+    width: 80,
+    height: 30,
+    backgroundColor: "rgb(15, 163, 177)",
+    position: "absolute",
+  },
   img: { width: 200, height: 200 },
   topSection: { display: "flex", flexDirection: "row" },
   mainSpecies: {
     display: "flex",
+    flexGrow: 1,
     marginLeft: 10,
     padding: 10,
+    paddingTop: 35,
     backgroundColor: "rgba(255,255,255,.8)",
     borderColor: "rgb(15, 163, 177)",
     borderWidth: 2,
@@ -183,12 +201,14 @@ const styles = StyleSheet.create({
   notes: {
     marginVertical: 10,
     padding: 10,
+    paddingTop: 35,
     backgroundColor: "rgba(255,255,255,.8)",
     borderColor: "rgb(15, 163, 177)",
     borderWidth: 2,
     borderRadius: 10,
   },
   voteSection: {
+    paddingTop: 35,
     minHeight: 200,
     padding: 10,
     display: "flex",
@@ -202,13 +222,10 @@ const styles = StyleSheet.create({
     width: "40%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "baseline",
   },
 
   dropDown: {
-    alignSelf: "flex-end",
-
+    marginTop: "6%",
     backgroundColor: "rgba(255,255,255,.8)",
     borderColor: "rgb(15, 163, 177)",
   },
