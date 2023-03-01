@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
@@ -26,8 +25,6 @@ function Map({ reports }) {
   });
 
   const [mapRegion, setMapRegion] = useState(null);
-  const [focusMarker, setFocusMarker] = useState(null);
-  const _map = useRef(null);
 
   const species = reports.map((report) => {
     return report.species.species;
@@ -49,18 +46,19 @@ function Map({ reports }) {
       enableHighAccuracy: true,
     });
 
-    setMapRegion({
+
+    return ({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: 0.00922,
       longitudeDelta: 0.00421,
-    });
+    })
+   
   };
 
-  const mapAnimation = new Animated.Value(0);
-
   useEffect(() => {
-    getUserLocation().then(() => {
+    getUserLocation().then((currentLocation) => {
+      setMapRegion(currentLocation);
       setIsLoading(false);
     });
   }, []);
@@ -86,8 +84,7 @@ function Map({ reports }) {
       />
 
       <MapView
-        region={mapRegion}
-        ref={_map}
+        region = {mapRegion}
         mapType="satellite"
         showsUserLocation="true"
         style={styles.map}
@@ -107,7 +104,6 @@ function Map({ reports }) {
                 onPress={() => {
                   setIsHidden(false);
                   setModalInfo({ species, img_url, _id, lat, long });
-                  setFocusMarker({ latitude: lat, longitude: long });
                 }}
               >
                 <Image
