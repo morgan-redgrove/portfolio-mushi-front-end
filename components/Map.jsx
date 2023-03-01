@@ -25,8 +25,6 @@ function Map({ reports }) {
   });
 
   const [mapRegion, setMapRegion] = useState(null);
-  const [focusMarker, setFocusMarker] = useState(null);
-  const _map = useRef(null);
 
   const species = reports.map((report) => {
     return report.species.species;
@@ -47,6 +45,7 @@ function Map({ reports }) {
     let location = await Location.getCurrentPositionAsync({
       enableHighAccuracy: true,
     });
+
 
     return ({
       latitude: location.coords.latitude,
@@ -86,8 +85,7 @@ function Map({ reports }) {
 
 
       <MapView
-        region={mapRegion}
-        ref={_map}
+        region = {mapRegion}
         mapType="satellite"
         showsUserLocation="true"
         style={styles.map}
@@ -106,7 +104,6 @@ function Map({ reports }) {
                 onPress={() => {
                   setIsHidden(false);
                   setModalInfo({ species, img_url, _id, lat, long });
-                  setFocusMarker({ latitude: lat, longitude: long });
                 }}
                 ></Marker>
                 );
