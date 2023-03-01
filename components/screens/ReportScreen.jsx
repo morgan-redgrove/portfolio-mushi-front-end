@@ -18,7 +18,6 @@ import {
 } from "../../utils/ApiCalls";
 import { SelectList } from "react-native-dropdown-select-list";
 import { auth } from "../../firebaseConfig";
-import { Species } from "../Species";
 
 function ReportScreen({ route, navigation }) {
   const { id } = route.params;
@@ -70,9 +69,12 @@ function ReportScreen({ route, navigation }) {
     });
   };
 
-  const handleMoreInfo = () => {
-    setIsInfoVisible(true);
-  };
+  const navigateToSpecies = (name) => {
+    getMushroomByCommonName(name).then((mushroom) => {
+      navigation.navigate("Species", {mushroomInfo:mushroom })
+    })
+  } 
+
 
   if (!report) {
     return (
@@ -89,11 +91,12 @@ function ReportScreen({ route, navigation }) {
             <View style={styles.tab}></View>
             <Text style={styles.label}>Species </Text>
             <Text style={styles.species}>{report.species.species}</Text>
-
-            <TouchableOpacity style={styles.buttonBox} onPress={handleMoreInfo}>
+            <TouchableOpacity 
+              style={styles.buttonBox} 
+              onPress={() => {navigateToSpecies(report.species.species)}}
+            >
               <Text style={styles.buttonText}>Species Info</Text>
             </TouchableOpacity>
-
             <Text>ID credibility: {report.credibility}%</Text>
             <View style={styles.userDate}>
               <Text>Submitted by: {report.username}</Text>

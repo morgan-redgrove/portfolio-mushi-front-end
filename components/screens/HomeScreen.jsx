@@ -34,23 +34,30 @@ function HomeScreen({ navigation }) {
           <Text>Login / SignUp</Text>
         </TouchableOpacity>
       </View>
+      
+      {mushroom ?
+          <View>
+            <TouchableOpacity
+              style={styles.motd}
+              onPress={() => {navigation.navigate("Species", {mushroomInfo: mushroom})}} 
+            >
+              <Text 
+                style={styles.motdTitle}
 
-      {mushroom ? (
-        <View style={styles.motd}>
-          <Text style={styles.motdTitle}>Mushroom of the Day!</Text>
-          <Image
-            style={styles.motdImage}
-            source={{
-              uri: mushroom.img_url,
-            }}
-          />
-          <Text style={styles.motdText}>{mushroom.commonName}</Text>
-        </View>
-      ) : (
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      )}
+              >Mushroom of the Day!</Text>
+              <Image 
+                style={styles.motdImage}
+                source={{
+                  uri: mushroom.img_url
+                }}
+              />
+              <Text style={styles.motdText}>{mushroom.commonName}</Text>
+            </TouchableOpacity>
+          </View> :
+          <View>
+            <Text>Loading...</Text>
+          </View>
+      }
 
       <View style={styles.disclaimerBox}>
         <Image
