@@ -4,16 +4,16 @@ import { getReports } from "../../utils/ApiCalls";
 import ReportList from "../ReportList";
 import Map from "../Map";
 
-function MapScreen({route}) {
+function MapScreen({ route }) {
   const [reports, setReports] = useState(null);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     getReports().then((reports) => {
       setReports(reports);
-      setIsLoading(false)
-      console.log("getting reports")
+      setIsLoading(false);
+      console.log("getting reports");
     });
   }, [route]);
 
@@ -22,11 +22,11 @@ function MapScreen({route}) {
       <View>
         <Text>Loading...</Text>
       </View>
-    )
+    );
   } else {
     return (
       <View>
-        <Map reports={reports} setReports={setReports}/>
+        <Map reports={reports} setReports={setReports} />
       </View>
     );
   }
@@ -37,6 +37,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
 
 export default MapScreen;
