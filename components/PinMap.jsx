@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
@@ -56,7 +56,12 @@ function PinMap({ pinRegion, setPinRegion }) {
           });
         }}
       >
-        <Marker coordinate={pinRegion} title="Your Location" />
+        <Marker coordinate={pinRegion} title="Mushroom siting">
+        <Image
+          source={require("../assets/mushroom-icon.png")}
+          style={styles.marker}
+        />
+        </Marker>
       </MapView>
     </View>
   );
@@ -68,6 +73,11 @@ const styles = StyleSheet.create({
     height: 300,
     alignSelf: "center",
     borderRadius: 10,
+  },
+  marker: {
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
   },
 });
 export default PinMap;
