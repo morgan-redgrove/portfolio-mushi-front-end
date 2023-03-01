@@ -1,7 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
+import { getMushrooms } from "../../utils/ApiCalls";
 
 function HomeScreen({ navigation }) {
+  const [mushroom, setMushroom] = useState(null)
+
+  useEffect(() => {
+    getMushrooms().then((mushrooms) => {
+      const date = new Date().getDate()
+      const extendedMushroomArr = [...mushrooms, ...mushrooms]
+
+      setMushroom(extendedMushroomArr[date])
+    })
+  }, [])  
+
   return (
     <View style={styles.main}>
       <Image
@@ -22,6 +34,22 @@ function HomeScreen({ navigation }) {
           <Text>Login / SignUp</Text>
         </TouchableOpacity>
       </View>
+      
+      {mushroom ?
+          <View style={styles.motd}>
+            <Text style={styles.motdTitle}>Mushroom of the Day!</Text>
+            <Image 
+              style={styles.motdImage}
+              source={{
+                uri: mushroom.img_url
+              }}
+            />
+            <Text style={styles.motdText}>{mushroom.commonName}</Text>
+          </View> :
+          <View>
+            <Text>Loading...</Text>
+          </View>
+      }
 
       <View style={styles.disclaimerBox}>
         <Image
@@ -114,6 +142,33 @@ const styles = StyleSheet.create({
     right: 0,
     top: -8,
   },
+  motd: {
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  motdImage: {
+    height: 140,
+    width: 140,
+    borderRadius: 70,
+    borderColor: "white",
+    borderWidth: 3,
+    textAlign: "center",
+    marginBottom: 10
+
+  },
+  motdTitle: {
+    textAlign: "center",
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "white",
+    paddingBottom: 15
+  },
+  motdText: {
+    textAlign: "center",
+    fontSize: 18,
+    color: "white",
+  }
 });
 
 export default HomeScreen;
