@@ -4,7 +4,9 @@ import { MainStackNavigator } from "./MainStackNavigator";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+
 const Tab = createBottomTabNavigator();
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -28,7 +30,6 @@ const TabNavigator = () => {
               size={34}
             />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
@@ -44,7 +45,6 @@ const TabNavigator = () => {
               color={focused ? "rgb(15, 163, 177)" : "black"}
             />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
@@ -60,7 +60,6 @@ const TabNavigator = () => {
               color={focused ? "rgb(15, 163, 177)" : "black"}
             />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
@@ -76,11 +75,11 @@ const TabNavigator = () => {
               size={34}
             />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
     </Tab.Navigator>
   );
 };
+
 export default TabNavigator;
