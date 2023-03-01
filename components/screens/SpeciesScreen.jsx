@@ -9,41 +9,41 @@ import {
   Image
 } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
-import { addMonthsToGraph } from "../utils/utils";
+import { addMonthsToGraph } from "../../utils/utils";
 
 const { width } = Dimensions.get("window");
 const cardWidth = width *0.9
 
-export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
-  const handleInfoClose = () => {
-    setIsInfoVisible(false);
-  };
+function SpeciesScreen ({ route }) {
+  const { mushroomInfo } = route.params;
 
   const graphData = addMonthsToGraph(mushroomInfo.months);
+
   return (
-    <Modal animationType="slide" transparent={true}>
-      <View style={styles.modal}>
-        <Text style={styles.h1}>{mushroomInfo?.commonName}</Text>
-        <Image style = {styles.speciesImage}source= {{uri:mushroomInfo.img_url}}/>
-        <Text style={styles.h2}>{mushroomInfo?.latinName} - {mushroomInfo?.order}</Text>
+    <View style={styles.modal}>
 
-        <BarChart
-          barWidth={22}
-          noOfSections={1}
-          barBorderRadius={4}
-          frontColor="lightgray"
-          data={graphData}
-          yAxisThickness={0}
-          hideYAxisText
-          xAxisThickness={0}
-          maxValue={1}
-          height={20}
-          initialSpacing={0}
-          spacing={5}
-          hideRules
-        />
+      <Text style={styles.h1}>{mushroomInfo?.commonName}</Text>
+      <Image style = {styles.speciesImage}source= {{uri:mushroomInfo.img_url}}/>
+      <Text style={styles.h2}>{mushroomInfo?.latinName} - {mushroomInfo?.order}</Text>
 
-<View style= {styles.propertiesContainer}>
+      {/* <BarChart
+        barWidth={22}
+        noOfSections={1}
+        barBorderRadius={4}
+        frontColor="lightgray"
+        data={graphData}
+        yAxisThickness={0}
+        hideYAxisText
+        xAxisThickness={0}
+        maxValue={1}
+        height={20}
+        initialSpacing={0}
+        spacing={5}
+        hideRules
+      /> */}
+
+
+      <View style= {styles.propertiesContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style= {styles.propertiesCard}>
             <Text>~{mushroomInfo?.averageHeight}mm</Text>
@@ -55,47 +55,45 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
             <Text>{mushroomInfo?.habitat}</Text>
           </View>
         </ScrollView>
-</View>
+      </View>
 
-        <View style= {styles.colorsContainer}>
-          {mushroomInfo.colors.map((color)=>{
-            
-            return <View key = {color} style= {[styles.speciesColorCard, {backgroundColor: `${color.toLowerCase()}`}]}></View>
-          })}
-        </View>
-          <Text>{mushroomInfo?.colors.join(", ")}</Text>
 
-       <View style = {styles.detailsContainer}>
+      {/* <View style= {styles.colorsContainer}>
+        {mushroomInfo.colors.map((color)=>{
+          return <View key = {color} style= {[styles.speciesColorCard, {backgroundColor: `${color.toLowerCase()}`}]}></View>
+        })}
+      </View> */}
+
+
+      <Text>{mushroomInfo?.colors.join(", ")}</Text>
+
+
+      <View style = {styles.detailsContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} snapToInterval= {cardWidth} snapToAlignment= {"center"} decelerationRate= {0}>
+        
           <View style = {styles.detailsCard}>
             <Text style = {styles.h3}>Cap</Text>
-              <Text>{mushroomInfo?.attributes.cap}</Text>
-            </View>
+            <Text>{mushroomInfo?.attributes.cap}</Text>
+          </View>
 
+          <View style = {styles.detailsCard}>
+            <Text style= {styles.h3}>Stem</Text>
+            <Text>{mushroomInfo?.attributes.stem}</Text>
+          </View>
 
-        <View style = {styles.detailsCard}>
-          <Text style= {styles.h3}>Stem</Text>
-          <Text>{mushroomInfo?.attributes.stem}</Text>
-        </View>
+          <View style = {styles.detailsCard}>
+            <Text style= {styles.h3}>Spores</Text>
+            <Text>{mushroomInfo?.attributes.spores}</Text>
+          </View>
 
-        <View style = {styles.detailsCard}>
-          <Text style= {styles.h3}>Spores</Text>
-          <Text>{mushroomInfo?.attributes.spores}</Text>
-        </View>
-
-        <View style = {styles.detailsCard}>
-          <Text style = {styles.h3}>Gills</Text>
-          <Text>{mushroomInfo?.attributes.gills}</Text>
-        </View>  
+          <View style = {styles.detailsCard}>
+            <Text style = {styles.h3}>Gills</Text>
+            <Text>{mushroomInfo?.attributes.gills}</Text>
+          </View>  
 
         </ScrollView>
-       </View>
-       <View style={styles.closeButton}>
-        <Button  title="Close" onPress={handleInfoClose} />
-       </View>
-
       </View>
-    </Modal>
+    </View>
   );
 };
 
@@ -169,3 +167,5 @@ const styles = StyleSheet.create({
     height: 0.9 * cardWidth
   }
 });
+
+export default SpeciesScreen;

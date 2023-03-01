@@ -18,7 +18,7 @@ function LogIn() {
       .then((userCredential) => {
         setPassword("");
         setEmail("");
-        console.log(userCredential);
+
         //current user tracked in UserContext
       })
       .catch((err) => {
@@ -34,7 +34,6 @@ function LogIn() {
         alignItems: "center",
       }}
     >
-      <Text style={styles.fieldHeading}>Login</Text>
       <TextInput
         style={styles.signUpField}
         placeholder="Enter Email"
@@ -57,21 +56,23 @@ function LogIn() {
 
 const styles = StyleSheet.create({
   signUpField: {
-    backgroundColor: "#0",
     width: 300,
     height: 80,
     margin: 10,
     fontSize: 20,
     textAlign: "center",
-    borderWidth: 2,
-    borderColor: "#000",
-    borderRadius: 30,
+    borderWidth: 3,
+    backgroundColor: "rgba(255,255,255,.8)",
+    borderColor: "rgb(15, 163, 177)",
+    borderRadius: 10,
   },
   fieldHeading: {
+    color: "rgba(255,255,255,.8)",
     fontSize: 30,
     fontWeight: "900",
   },
   button: {
+    color: "rgb(15, 163, 177)",
     fontSize: 30,
     fontWeight: "900",
     backgroundColor: "#88",
