@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
@@ -49,18 +48,18 @@ function Map({ reports }) {
       enableHighAccuracy: true,
     });
 
-    setMapRegion({
+    return ({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: 0.00922,
       longitudeDelta: 0.00421,
-    });
+    })
+   
   };
 
-  const mapAnimation = new Animated.Value(0);
-
   useEffect(() => {
-    getUserLocation().then(() => {
+    getUserLocation().then((currentLocation) => {
+      setMapRegion(currentLocation);
       setIsLoading(false);
     });
   }, []);
