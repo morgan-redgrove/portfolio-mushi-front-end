@@ -1,13 +1,28 @@
 import React from "react";
 import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 
-function HomeScreen() {
+function HomeScreen({ navigation }) {
   return (
     <View style={styles.main}>
       <Image
         source={require("../../assets/mushi.png")}
         style={styles.titleImg}
       />
+      <View style={styles.loginBox}>
+        <Text style={styles.loginBoxText}>
+          Welcome to Mushi! please login or signup to join the mushroom spotting
+          community!
+        </Text>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => {
+            navigation.navigate("User");
+          }}
+        >
+          <Text>Login / SignUp</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.disclaimerBox}>
         <Image
           style={styles.image}
@@ -42,16 +57,28 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     tintColor: "rgb(15, 163, 177)",
   },
-
-  button: {
-    height: "100%",
-    backgroundColor: "lightseagreen",
+  loginBox: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    margin: 10,
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: "rgba(255,255,255,.8)",
+    borderColor: "rgb(15, 163, 177)",
+    borderWidth: 2,
+    borderRadius: 10,
   },
-  buttonText: {
+  loginBoxText: {
     textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
   },
+  loginButton: {
+    margin: 10,
+    backgroundColor: "rgb(15, 163, 177)",
+    borderRadius: 10,
+    padding: 10,
+  },
+
   disclaimerHeader: {
     display: "flex",
     flexDirection: "row",
