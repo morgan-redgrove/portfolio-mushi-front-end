@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import { getMushrooms } from "../../utils/ApiCalls";
 
 function HomeScreen({ navigation }) {
-  const [mushroom, setMushroom] = useState(null)
+  const [mushroom, setMushroom] = useState(null);
 
   useEffect(() => {
     getMushrooms().then((mushrooms) => {
-      const date = new Date().getDate()
-      const extendedMushroomArr = [...mushrooms, ...mushrooms]
+      const date = new Date().getDate();
+      const extendedMushroomArr = [...mushrooms, ...mushrooms];
 
-      setMushroom(extendedMushroomArr[date])
-    })
-  }, [])  
+      setMushroom(extendedMushroomArr[date]);
+    });
+  }, []);
 
   return (
     <View style={styles.main}>
@@ -34,29 +34,30 @@ function HomeScreen({ navigation }) {
           <Text>Login / SignUp</Text>
         </TouchableOpacity>
       </View>
-      
-      {mushroom ?
-          <View style={styles.motd}>
-            <Text style={styles.motdTitle}>Mushroom of the Day!</Text>
-            <Image 
-              style={styles.motdImage}
-              source={{
-                uri: mushroom.img_url
-              }}
-            />
-            <Text style={styles.motdText}>{mushroom.commonName}</Text>
-          </View> :
-          <View>
-            <Text>Loading...</Text>
-          </View>
-      }
+
+      {mushroom ? (
+        <View style={styles.motd}>
+          <Text style={styles.motdTitle}>Mushroom of the Day!</Text>
+          <Image
+            style={styles.motdImage}
+            source={{
+              uri: mushroom.img_url,
+            }}
+          />
+          <Text style={styles.motdText}>{mushroom.commonName}</Text>
+        </View>
+      ) : (
+        <View>
+          <Text>Loading...</Text>
+        </View>
+      )}
 
       <View style={styles.disclaimerBox}>
         <Image
           style={styles.image}
           source={require("../../assets/mushroom-question.png")}
         />
-        <Text style={styles.disclaimerTitle}>DISCLAIMER</Text>
+        <Text style={styles.disclaimerTitle}>Disclaimer</Text>
 
         <Text style={styles.disclaimerText}>
           Mushi App is intended for educational purposes only and does not
@@ -143,9 +144,8 @@ const styles = StyleSheet.create({
     top: -8,
   },
   motd: {
-    justifyContent: 'center',
-    alignItems: 'center',
-
+    justifyContent: "center",
+    alignItems: "center",
   },
   motdImage: {
     height: 140,
@@ -154,21 +154,20 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderWidth: 3,
     textAlign: "center",
-    marginBottom: 10
-
+    marginBottom: 10,
   },
   motdTitle: {
     textAlign: "center",
     fontSize: 28,
     fontWeight: "bold",
     color: "white",
-    paddingBottom: 15
+    paddingBottom: 15,
   },
   motdText: {
     textAlign: "center",
     fontSize: 18,
     color: "white",
-  }
+  },
 });
 
 export default HomeScreen;
