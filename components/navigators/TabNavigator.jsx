@@ -4,7 +4,9 @@ import { MainStackNavigator } from "./MainStackNavigator";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+
 const Tab = createBottomTabNavigator();
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -24,7 +26,6 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused }) => (
             <Entypo name="home" color={focused ? "white" : "black"} size={34} />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
@@ -40,7 +41,6 @@ const TabNavigator = () => {
               color={focused ? "white" : "black"}
             />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
@@ -56,7 +56,6 @@ const TabNavigator = () => {
               color={focused ? "white" : "black"}
             />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
@@ -72,11 +71,11 @@ const TabNavigator = () => {
               size={34}
             />
           ),
-          // tabBarLabelStyle: { fontSize: 10 },
           tabBarLabel: () => null,
         }}
       />
     </Tab.Navigator>
   );
 };
+
 export default TabNavigator;

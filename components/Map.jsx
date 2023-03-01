@@ -16,7 +16,6 @@ import * as Location from "expo-location";
 function Map({ reports }) {
   const navigation = useNavigation();
 
-
   const [isLoading, setIsLoading] = useState(true);
   const [selected, setSelected] = useState("");
   const [filtReports, setFiltReports] = useState(reports);
@@ -86,7 +85,6 @@ function Map({ reports }) {
         }
       />
 
-
       <MapView
         region={mapRegion}
         ref={_map}
@@ -98,28 +96,34 @@ function Map({ reports }) {
           ({ _id, img_url, location: { lat, long }, species: { species } }) => {
             return (
               <Marker
-              key={_id}
-              coordinate={
-                lat && long
-                ? { latitude: lat, longitude: long }
-                : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
-              }
-                image={require("../assets/mushroom-icon.png")}
+                key={_id}
+                coordinate={
+                  lat && long
+                    ? { latitude: lat, longitude: long }
+                    : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
+                }
+                // image={require("../assets/mushroom-icon.png")}
+                // style={styles.marker}
                 onPress={() => {
                   setIsHidden(false);
                   setModalInfo({ species, img_url, _id, lat, long });
                   setFocusMarker({ latitude: lat, longitude: long });
                 }}
-                ></Marker>
-                );
-              }
-              )}
+              >
+                <Image
+                  source={require("../assets/mushroom-icon.png")}
+                  style={styles.marker}
+                />
+              </Marker>
+            );
+          }
+        )}
       </MapView>
-              {isLoading ? (
-                <View style={styles.loadingModal}>
-                  <Text>Getting your Location...</Text>
-                </View>)
-              : null}
+      {isLoading ? (
+        <View style={styles.loadingModal}>
+          <Text>Getting your Location...</Text>
+        </View>
+      ) : null}
 
       {isHidden ? null : (
         <View style={styles.modal}>
@@ -133,16 +137,15 @@ function Map({ reports }) {
               <Text>X</Text>
             </TouchableOpacity>
             <View style={styles.flexBox}>
-
               <Image
                 source={{ uri: modalInfo.img_url }}
                 alt={`sighting of a ${modalInfo.species}`}
                 style={styles.cardImage}
-                />
+              />
 
-                <View style= {styles.cardText}>
+              <View style={styles.cardText}>
                 <Text>{modalInfo.species}</Text>
-                </View>
+              </View>
             </View>
             <TouchableOpacity
               style={styles.reportButton}
@@ -189,10 +192,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   flexBox: {
-    width:"100%",
+    width: "100%",
     height: "80%",
-    flexDirection: 'row',
-    justifyContent:"space-between" ,
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingBottom: 10,
   },
   cardImage: {
@@ -201,8 +204,8 @@ const styles = StyleSheet.create({
     height: "100%",
     alignSelf: "center",
   },
-  cardText:{
-    flex:1,
+  cardText: {
+    flex: 1,
     alignItems: "center",
   },
   reportButton: {
@@ -213,10 +216,13 @@ const styles = StyleSheet.create({
   loadingModal: {
     position: "absolute",
     backgroundColor: "#FFF",
-    padding:10,
-top: "25%",
-alignSelf: "center"
-
-  }
+    padding: 10,
+    top: "25%",
+    alignSelf: "center",
+  },
+  marker: {
+    width: 50,
+    height: 50,
+  },
 });
 export default Map;
