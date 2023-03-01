@@ -22,15 +22,17 @@ function UserScreen() {
 
   if (user) {
     return (
-      <TouchableOpacity>
-        <Text onPress={() => handleSignOut()} style={styles.button}>
-          Logout
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.main}>
+        <TouchableOpacity>
+          <Text onPress={() => handleSignOut()} style={styles.button}>
+            Logout
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   } else {
     return (
-      <View>
+      <View style={styles.main}>
         {showSignUp ? <SignUp /> : <LogIn />}
         <TouchableOpacity>
           <Text
@@ -48,11 +50,25 @@ function UserScreen() {
 }
 
 const styles = StyleSheet.create({
+  main: {
+    paddingTop: 40,
+    backgroundColor: "rgb(31, 35, 53)",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
   button: {
+    padding: 10,
+    marginTop: 20,
     textAlign: "center",
     fontSize: 15,
     fontWeight: "900",
-    backgroundColor: "#88",
+    width: 200,
+    backgroundColor: "rgba(255,255,255,.8)",
+    borderColor: "rgb(15, 163, 177)",
+    borderWidth: 3,
+    borderRadius: 10,
   },
 });
 
