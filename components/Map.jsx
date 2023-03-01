@@ -102,8 +102,8 @@ function Map({ reports }) {
                     ? { latitude: lat, longitude: long }
                     : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
                 }
-                // image={require("../assets/mushroom-icon.png")}
-                // style={styles.marker}
+                //image={require("../assets/mushroom-icon.png")}
+                //style={styles.marker}
                 onPress={() => {
                   setIsHidden(false);
                   setModalInfo({ species, img_url, _id, lat, long });
@@ -221,8 +221,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   marker: {
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
   },
 });
 export default Map;
