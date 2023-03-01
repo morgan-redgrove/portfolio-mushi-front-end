@@ -44,7 +44,7 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
         />
 
 <View style= {styles.speciesProperties}>
-        <ScrollView horizontal >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style= {styles.speciesProperty}>
             <Text>~{mushroomInfo?.averageHeight}mm</Text>
           </View>
@@ -57,12 +57,16 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
         </ScrollView>
 </View>
 
-        <View>
+        <View style= {styles.speciesColors}>
+          {mushroomInfo.colors.map((color)=>{
+            
+            return <View style= {[styles.speciesColorIcon, {backgroundColor: `${color.toLowerCase()}`}]}></View>
+          })}
           <Text>Colors: {mushroomInfo?.colors.join(", ")}</Text>
         </View>
 
        <View style = {styles.detailsContainer}>
-        <ScrollView horizontal snapToInterval= {cardWidth} snapToAlignment= {"center"} decelerationRate= {0}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} snapToInterval= {cardWidth} snapToAlignment= {"center"} decelerationRate= {0}>
           <View style = {styles.detailsCard}>
             <Text style = {styles.h3}>Cap</Text>
               <Text>{mushroomInfo?.attributes.cap}</Text>
@@ -137,5 +141,15 @@ const styles = StyleSheet.create({
   detailsCard: {
     width: cardWidth,
     paddingHorizontal: 10
+  },
+  speciesColors:{
+    width: 300,
+    backgroundColor: "grey"
+  }, 
+  speciesColorIcon: {
+    height: 30,
+    width: 30,
+    backgroundColor:"black",
+    borderRadius: "50%"
   }
 });
