@@ -133,7 +133,7 @@ function Map({ reports }) {
                 setIsHidden(true);
               }}
             >
-              <Text>X</Text>
+              <Text>ⓧ</Text>
             </TouchableOpacity>
             <View style={styles.flexBox}>
               <Image
@@ -183,12 +183,14 @@ const styles = StyleSheet.create({
     right: 0,
   },
   card: {
+    
     backgroundColor: "#FFF",
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
     alignSelf: "center",
     borderRadius: 5,
     padding: 10,
+    backgroundColor: "rgba(255,255,255,.7)",
   },
   flexBox: {
     width: "100%",
@@ -202,6 +204,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignSelf: "center",
+    borderRadius: 15
   },
   cardText: {
     flex: 1,
@@ -209,8 +212,9 @@ const styles = StyleSheet.create({
   },
   reportButton: {
     padding: 10,
-    borderWidth: 1,
     alignItems: "center",
+    backgroundColor: "rgb(15, 163, 177)",
+    borderRadius: 5
   },
   loadingModal: {
     position: "absolute",
