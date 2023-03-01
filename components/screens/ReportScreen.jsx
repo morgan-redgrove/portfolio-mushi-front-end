@@ -17,12 +17,10 @@ import {
   deleteReportById,
 } from "../../utils/ApiCalls";
 import { SelectList } from "react-native-dropdown-select-list";
-import { UserContext } from "../contexts/UserContext";
 import { auth } from "../../firebaseConfig";
 
 function ReportScreen({ route, navigation }) {
   const { id } = route.params;
-  // const { user } = useContext(UserContext);
   const [currentUser, setCurrentUser] = useState("");
   const [report, setReport] = useState(null);
   const [mushroomInfo, setMushroomInfo] = useState(null);
@@ -92,9 +90,14 @@ function ReportScreen({ route, navigation }) {
           <View style={styles.mainSpecies}>
             <View style={styles.tab}></View>
             <Text style={styles.label}>Species </Text>
-            <Text>{report.species.species}</Text>
-            <Button title="More Info" onPress={() => {navigateToSpecies(report.species.species)}} />
-            <Text>credibility: {report.credibility}</Text>
+            <Text style={styles.species}>{report.species.species}</Text>
+            <TouchableOpacity 
+              style={styles.buttonBox} 
+              onPress={() => {navigateToSpecies(report.species.species)}}
+            >
+              <Text style={styles.buttonText}>Species Info</Text>
+            </TouchableOpacity>
+            <Text>ID credibility: {report.credibility}%</Text>
             <View style={styles.userDate}>
               <Text>Submitted by: {report.username}</Text>
               <Text>{report.time_stamp.slice(0, 16)}</Text>
@@ -113,17 +116,19 @@ function ReportScreen({ route, navigation }) {
           <View style={styles.voteSectionLeft}>
             <SelectList
               boxStyles={styles.dropDown}
+              dropdownStyles={styles.dropDown}
               setSelected={(val) => setSelected(val)}
               data={options}
               save="value"
               placeholder="Vote on species"
             />
             <TouchableOpacity
+              style={styles.buttonBox}
               onPress={() => {
                 voteForSpecies(id, selected);
               }}
             >
-              <Text>Submit Vote</Text>
+              <Text style={styles.buttonText}>Submit Vote</Text>
             </TouchableOpacity>
           </View>
 
@@ -150,12 +155,14 @@ function ReportScreen({ route, navigation }) {
         </View>
 
         {report.username === currentUser ? (
-          <Button
-            title="Delete Report"
+          <TouchableOpacity
+            style={styles.buttonBox}
             onPress={() => {
               deleteReport(id);
             }}
-          />
+          >
+            <Text style={styles.buttonText}>Delete Report</Text>
+          </TouchableOpacity>
         ) : null}
 
         {isInfoVisible && (
@@ -175,9 +182,15 @@ const styles = StyleSheet.create({
     height: "100%",
     padding: 10,
   },
-  label: { position: "absolute", left: 10, top: 5 },
+  label: {
+    position: "absolute",
+    left: 10,
+    top: 5,
+    color: "white",
+  },
   tab: {
-    borderRadius: 5,
+    borderTopLeftRadius: 5,
+    borderBottomRightRadius: 5,
     width: 80,
     height: 30,
     backgroundColor: "rgb(15, 163, 177)",
@@ -196,8 +209,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
   },
+  species: { fontSize: 20, fontWeight: "800", marginBottom: 10 },
   userDate: {
-    marginTop: 30,
+    marginTop: 20,
   },
 
   notes: {
@@ -219,6 +233,7 @@ const styles = StyleSheet.create({
     borderColor: "rgb(15, 163, 177)",
     borderWidth: 2,
     borderRadius: 10,
+    marginBottom: 10,
   },
   voteSectionLeft: {
     width: "40%",
@@ -231,6 +246,15 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,.8)",
     borderColor: "rgb(15, 163, 177)",
   },
+  buttonBox: {
+    marginTop: 10,
+    alignSelf: "center",
+    backgroundColor: "rgb(15, 163, 177)",
+    padding: 5,
+    borderRadius: 10,
+    width: "100%",
+  },
+  buttonText: { fontWeight: "800", color: "white", textAlign: "center" },
   speciesList: {
     marginLeft: 20,
   },
