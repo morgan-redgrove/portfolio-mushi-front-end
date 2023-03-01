@@ -81,6 +81,9 @@ function Map({ reports }) {
             })
           )
         }
+        boxStyles={styles.dropDown}
+        dropdownStyles={[styles.dropDown, styles.dropDownBox]}
+
       />
 
       <MapView
@@ -221,5 +224,17 @@ const styles = StyleSheet.create({
     height: 30,
     resizeMode: "contain",
   },
+  dropDown: {
+    width: "100%",
+    alignSelf: "center",
+
+    borderWidth: 3,
+    backgroundColor: "rgba(255,255,255,.8)",
+    borderColor: "rgb(15, 163, 177)",
+  },
+  dropDownBox: {
+    marginTop: 5,
+  },
 });
+
 export default Map;
