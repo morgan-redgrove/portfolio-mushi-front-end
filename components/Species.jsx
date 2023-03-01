@@ -20,11 +20,11 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
   };
 
   const graphData = addMonthsToGraph(mushroomInfo.months);
-  
   return (
     <Modal animationType="slide" transparent={true}>
       <View style={styles.modal}>
         <Text style={styles.h1}>{mushroomInfo?.commonName}</Text>
+        <Image style = {styles.speciesImage}source= {{uri:mushroomInfo.img_url}}/>
         <Text style={styles.h2}>{mushroomInfo?.latinName} - {mushroomInfo?.order}</Text>
 
         <BarChart
@@ -43,27 +43,27 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
           hideRules
         />
 
-<View style= {styles.speciesProperties}>
+<View style= {styles.propertiesContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style= {styles.speciesProperty}>
+          <View style= {styles.propertiesCard}>
             <Text>~{mushroomInfo?.averageHeight}mm</Text>
           </View>
-          <View style = {styles.speciesProperty}>
+          <View style = {styles.propertiesCard}>
             <Text>{mushroomInfo?.toxic ? "Toxic" : "Non-Toxic"}</Text>
           </View> 
-          <View>
+          <View style= {styles.propertiesCard}>
             <Text>{mushroomInfo?.habitat}</Text>
           </View>
         </ScrollView>
 </View>
 
-        <View style= {styles.speciesColors}>
+        <View style= {styles.colorsContainer}>
           {mushroomInfo.colors.map((color)=>{
             
-            return <View style= {[styles.speciesColorIcon, {backgroundColor: `${color.toLowerCase()}`}]}></View>
+            return <View key = {color} style= {[styles.speciesColorCard, {backgroundColor: `${color.toLowerCase()}`}]}></View>
           })}
-          <Text>Colors: {mushroomInfo?.colors.join(", ")}</Text>
         </View>
+          <Text>{mushroomInfo?.colors.join(", ")}</Text>
 
        <View style = {styles.detailsContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} snapToInterval= {cardWidth} snapToAlignment= {"center"} decelerationRate= {0}>
@@ -83,8 +83,6 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
           <Text>{mushroomInfo?.attributes.spores}</Text>
         </View>
 
-       
-
         <View style = {styles.detailsCard}>
           <Text style = {styles.h3}>Gills</Text>
           <Text>{mushroomInfo?.attributes.gills}</Text>
@@ -92,7 +90,10 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
 
         </ScrollView>
        </View>
-        <Button title="Close" onPress={handleInfoClose} />
+       <View style={styles.closeButton}>
+        <Button  title="Close" onPress={handleInfoClose} />
+       </View>
+
       </View>
     </Modal>
   );
@@ -102,20 +103,19 @@ export const Species = ({ mushroomInfo, setIsInfoVisible }) => {
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: "#FFF",
-    marginVertical: 100,
+    marginVertical: 50,
     padding: 10,
     borderRadius: 20,
     width: "90%",
   },
   h1: {
-    fontSize: 50,
+    fontSize: 40,
   },
   h2: {
-    fontSize: 25,
+    fontSize: 20,
     fontStyle: "italic",
   },
   h3:{
@@ -124,32 +124,48 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
   },
-  speciesProperties: {
+  propertiesContainer: {
     height:30,
-    marginVertical: 10
+    marginVertical: 10,
   },
-  speciesProperty: {
+  propertiesCard: {
+    justifyContent: "center",
     paddingHorizontal: 10,
-  },
-  speciesDetails: {
-    backgroundColor: "grey"
+    marginHorizontal: 10,
   },
   detailsContainer : {
-    paddingVertical:10,
+    marginVertical:10,
     height: 100
   }, 
   detailsCard: {
     width: cardWidth,
     paddingHorizontal: 10
   },
-  speciesColors:{
-    width: 300,
-    backgroundColor: "grey"
+  colorsContainer:{
+    width: cardWidth,
+    flexDirection: "row",
+    justifyContent: "space-evenly"
   }, 
-  speciesColorIcon: {
-    height: 30,
-    width: 30,
-    backgroundColor:"black",
-    borderRadius: "50%"
+  speciesColorCard: {
+    height: 50,
+    width: 50,
+    borderRadius: "50%",
+    shadowOffset: {
+      width: 3,
+      height: 3
+
+    },
+    shadowOpacity: 10,
+    shadowColor: "grey"
+  
+  },
+  closeButton: {
+    position: "absolute",
+    padding: 10,
+    bottom:0
+  },
+  speciesImage: {
+    width:0.9 *cardWidth,
+    height: 0.9 * cardWidth
   }
 });
