@@ -63,102 +63,114 @@ function Map({ reports }) {
     });
   }, []);
 
-  return (
-    <View>
-      <SelectList
-        setSelected={(val) => setSelected(val)}
-        data={options}
-        save="value"
-        placeholder="Search for a species..."
-        onSelect={() =>
-          setFiltReports(
-            reports.filter((report) => {
-              if (selected === "Show All") {
-                return true;
-              } else {
-                return report.species.species === selected;
-              }
-            })
-          )
-        }
-        boxStyles={styles.dropDown}
-        dropdownStyles={[styles.dropDown, styles.dropDownBox]}
-
-      />
-
-      <MapView
-        region = {mapRegion}
-        mapType="satellite"
-        showsUserLocation="true"
-        style={styles.map}
-      >
-        {filtReports.map(
-          ({ _id, img_url, location: { lat, long }, species: { species } }) => {
-            return (
-              <Marker
-                key={_id}
-                coordinate={
-                  lat && long
-                    ? { latitude: lat, longitude: long }
-                    : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
+  if (isLoading) {
+    return(
+      <View style={styles.iconWrapper}>
+        <Image
+          style={styles.mapIcon}
+          source={require("../assets/map-icon.png")}
+        />
+        <Text style={styles.iconText}>Loading...</Text>
+      </View>
+    )
+  } else { 
+    return (
+      <View>
+        <SelectList
+          setSelected={(val) => setSelected(val)}
+          data={options}
+          save="value"
+          placeholder="Search for a species..."
+          onSelect={() =>
+            setFiltReports(
+              reports.filter((report) => {
+                if (selected === "Show All") {
+                  return true;
+                } else {
+                  return report.species.species === selected;
                 }
-                //image={require("../assets/mushroom-icon.png")}
-                //style={styles.marker}
+              })
+            )
+          }
+          boxStyles={styles.dropDown}
+          dropdownStyles={[styles.dropDown, styles.dropDownBox]}
+
+        />
+
+        <MapView
+          region = {mapRegion}
+          mapType="satellite"
+          showsUserLocation="true"
+          style={styles.map}
+        >
+          {filtReports.map(
+            ({ _id, img_url, location: { lat, long }, species: { species } }) => {
+              return (
+                <Marker
+                  key={_id}
+                  coordinate={
+                    lat && long
+                      ? { latitude: lat, longitude: long }
+                      : { latitude: 1, longitude: 1 } // this needs a value on first load to prevent err
+                  }
+                  //image={require("../assets/mushroom-icon.png")}
+                  //style={styles.marker}
+                  onPress={() => {
+                    setIsHidden(false);
+                    setModalInfo({ species, img_url, _id, lat, long });
+                  }}
+                >
+                  <Image
+                    source={require("../assets/mushroom-icon.png")}
+                    style={styles.marker}
+                  />
+                </Marker>
+              );
+            }
+          )}
+        </MapView>
+        {isLoading ? (
+          <View style={styles.loadingModal}>
+            <Text>Getting your Location...</Text>
+          </View>
+        ) : null}
+
+        {isHidden ? null : (
+          <View style={styles.modal}>
+            <View style={styles.card}>
+              <TouchableOpacity
+                style={styles.modalClose}
                 onPress={() => {
-                  setIsHidden(false);
-                  setModalInfo({ species, img_url, _id, lat, long });
+                  setIsHidden(true);
                 }}
               >
+                <Text>ⓧ</Text>
+              </TouchableOpacity>
+              <View style={styles.flexBox}>
                 <Image
-                  source={require("../assets/mushroom-icon.png")}
-                  style={styles.marker}
+                  source={{ uri: modalInfo.img_url }}
+                  alt={`sighting of a ${modalInfo.species}`}
+                  style={styles.cardImage}
                 />
-              </Marker>
-            );
-          }
-        )}
-      </MapView>
-      {isLoading ? (
-        <View style={styles.loadingModal}>
-          <Text>Getting your Location...</Text>
-        </View>
-      ) : null}
 
-      {isHidden ? null : (
-        <View style={styles.modal}>
-          <View style={styles.card}>
-            <TouchableOpacity
-              style={styles.modalClose}
-              onPress={() => {
-                setIsHidden(true);
-              }}
-            >
-              <Text>ⓧ</Text>
-            </TouchableOpacity>
-            <View style={styles.flexBox}>
-              <Image
-                source={{ uri: modalInfo.img_url }}
-                alt={`sighting of a ${modalInfo.species}`}
-                style={styles.cardImage}
-              />
-
-              <View style={styles.cardText}>
-                <Text>{modalInfo.species}</Text>
+                <View style={styles.cardText}>
+                  <Text>{modalInfo.species}</Text>
+                </View>
               </View>
+              <TouchableOpacity
+                style={styles.reportButton}
+                onPress={() =>
+                  navigation.navigate("Report", { id: modalInfo._id })
+                }
+              >
+                <Text>View Report</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.reportButton}
-              onPress={() =>
-                navigation.navigate("Report", { id: modalInfo._id })
-              }
-            >
-              <Text>View Report</Text>
-            </TouchableOpacity>
           </View>
-        </View>
-      )}
-    </View>
-  );
+        )}
+      </View>
+    );
+  }
 }
 
 const { width, height } = Dimensions.get("window");
@@ -239,6 +251,20 @@ const styles = StyleSheet.create({
   dropDownBox: {
     marginTop: 5,
   },
+  iconWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  mapIcon: {
+    height: 250,
+    width: 250,
+    marginTop: 250
+  },
+  iconText: {
+    textAlign: "center",
+    fontSize: 28,
+    fontWeight: "bold",
+  }
 });
 
 export default Map;
