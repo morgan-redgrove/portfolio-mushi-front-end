@@ -46,14 +46,12 @@ function Map({ reports }) {
       enableHighAccuracy: true,
     });
 
-
-    return ({
+    return {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: 0.00922,
       longitudeDelta: 0.00421,
-    })
-   
+    };
   };
 
   useEffect(() => {
@@ -83,17 +81,22 @@ function Map({ reports }) {
         }
         boxStyles={styles.dropDown}
         dropdownStyles={[styles.dropDown, styles.dropDownBox]}
-
       />
 
       <MapView
-        region = {mapRegion}
+        region={mapRegion}
         mapType="satellite"
         showsUserLocation="true"
         style={styles.map}
       >
         {filtReports.map(
-          ({ _id, img_url, location: { lat, long }, species: { species } }) => {
+          ({
+            _id,
+            img_url,
+            location: { lat, long },
+            species: { species },
+            userName,
+          }) => {
             return (
               <Marker
                 key={_id}
@@ -133,7 +136,7 @@ function Map({ reports }) {
                 setIsHidden(true);
               }}
             >
-              <Text>ⓧ</Text>
+              <Text style={styles.cross}>ⓧ</Text>
             </TouchableOpacity>
             <View style={styles.flexBox}>
               <Image
@@ -180,10 +183,10 @@ const styles = StyleSheet.create({
   },
   modalClose: {
     position: "absolute",
-    right: 0,
+    top: 5,
+    right: 10,
   },
   card: {
-    
     backgroundColor: "#FFF",
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
@@ -204,7 +207,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignSelf: "center",
-    borderRadius: 15
+    borderRadius: 15,
+  },
+  cross: {
+    fontSize: 20,
   },
   cardText: {
     flex: 1,
@@ -214,7 +220,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     backgroundColor: "rgb(15, 163, 177)",
-    borderRadius: 5
+    borderRadius: 5,
   },
   loadingModal: {
     position: "absolute",
