@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, Image, View } from "react-native";
 import { getReports } from "../../utils/ApiCalls";
 import ReportList from "../ReportList";
 import Map from "../Map";
@@ -18,11 +18,15 @@ function MapScreen({ route }) {
   }, [route]);
 
   if (isLoading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
+    return(
+      <View style={styles.iconWrapper}>
+        <Image
+          style={styles.mapIcon}
+          source={require("../../assets/map-icon.png")}
+        />
+        <Text style={styles.iconText}>Loading...</Text>
       </View>
-    );
+    )
   } else {
     return (
       <View>
@@ -36,6 +40,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  iconWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  mapIcon: {
+    height: 250,
+    width: 250,
+    marginTop: 250
+  },
+  iconText: {
+    textAlign: "center",
+    fontSize: 28,
+    fontWeight: "bold",
+  }
 });
 
 export default MapScreen;
