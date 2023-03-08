@@ -54,8 +54,15 @@ function HomeScreen({ navigation }) {
               <Text style={styles.motdText}>{mushroom.commonName}</Text>
             </TouchableOpacity>
           </View> :
-          <View>
-            <Text>Loading...</Text>
+          <View style={styles.motd}>
+            <Text 
+              style={styles.motdTitle}
+            >Mushroom of the Day!</Text>
+            <Image
+              style={styles.clockIcon}
+              source={require("../../assets/clock-icon.png")}
+            />
+            <Text style={styles.motdText}>Loading...</Text>
           </View>
       }
 
@@ -175,6 +182,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
   },
+  clockIcon: {
+    height: 135,
+    width: 135,
+  }
 });
 
 export default HomeScreen;
