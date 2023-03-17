@@ -10,7 +10,17 @@ Viewing a report users can vote for a species they believe the mushroom to be, t
 The back-end also calculates a species credibility score based on the number of votes for the assigned species and the number of conflicting votes.
 The app makes use of Firebase for secure user authorization and blob storage.
 
-### contributors :
+## cloning this repo
+
+use
+
+```
+npm install
+```
+
+to install packages, you will need to create a firebaseConfig.js file in the root directory as per firebase docks. This will need to export auth and storage config objects.
+
+## contributors :
 
 - Tom Fisher - (https://github.com/FisherTom)
 - Morgan Redgrove - (https://github.com/morgan-redgrove)
@@ -23,3 +33,7 @@ The app makes use of Firebase for secure user authorization and blob storage.
 ![map screen with report card](https://github.com/FisherTom/portfolio-mushi-front-end/blob/main/screenshots/Screenshot_20230308-112027.jpg?raw=true)
 ![view report screen](https://github.com/FisherTom/portfolio-mushi-front-end/blob/main/screenshots/Screenshot_20230308-112038.jpg?raw=true)
 ![species info page](https://github.com/FisherTom/portfolio-mushi-front-end/blob/main/screenshots/Screenshot_20230308-111914.jpg?raw=true)
+
+```
+
+```
